@@ -13,7 +13,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 // CORS setup for frontend
-const allowedOrigins = ['http://localhost:5173','https://ghar-ka-achar-nine.vercel.app/'];
+const allowedOrigins = ['https://ghar-ka-achar-nine.vercel.app'];
 app.use(cors({
   origin: function (origin, callback) {
     if (!origin || allowedOrigins.includes(origin)) {
