@@ -10,7 +10,7 @@ export const syncCartAPI = createAsyncThunk(
       const cartArray = state.cart.cart;
 
       const res = await axios.post(
-        "http://localhost:3000/cart/add",
+        "https://gharkaachar.onrender.com/cart/add",
         { cart: cartArray },
         { withCredentials: true }
       );
