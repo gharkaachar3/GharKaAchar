@@ -16,9 +16,8 @@ export default function AddAdmin() {
   });
 
   const onSubmit = async (data) => {
-    // You can replace the endpoint below with your actual backend route
     try {
-      const res = await axiosClient.post("/admin/add", data);
+      const res = await axiosClient.post("/user/add/admin", data);
       alert("Admin added successfully!");
       reset();
     } catch (err) {

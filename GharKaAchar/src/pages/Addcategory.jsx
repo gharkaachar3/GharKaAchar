@@ -42,12 +42,12 @@ export default function AddCategory() {
     try {
       setMsgType("info");
       setMsg("Submitting...");
-      
+      console.log(values)
        const files = values.imageFile[0]
-            const { name , category , description , imageFile , price , quantity } = values;
+            const { category_name } = values;
             const signaturess = await axiosClient.post("/admin/signature",{
-               Product_category: category ,
-               Product_name: name
+               Product_category: "own" ,
+               Product_name: category_name
             });
             console.log(signaturess)
             const {signature , public_id , uploadUrl , timestamp , cloud_name , CLOUDINARY_API_KEY } = signaturess.data
@@ -66,9 +66,9 @@ export default function AddCategory() {
       
             console.log(uploadResponse)
             const reqSendData = {
-            category_image: uploadResponse.data.secure_url  ,
-             category_name: values.name ,
-            category_image_publicID: uploadResponse.data.public_id
+             category_image: uploadResponse.data.secure_url  ,
+             category_name: category_name ,
+             category_image_publicID: uploadResponse.data.public_id
             }
 
             const savedata = await axiosClient.post('/admin/add/category',reqSendData)

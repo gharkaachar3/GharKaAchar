@@ -1,6 +1,6 @@
 const express = require("express");
 const Auth = express.Router();
-const { register, login, logout , deleteUser , resetPassword , AddAdmin} = require("../Controller/AuthController");
+const { register, login, logout , deleteUser , resetPassword , AddAdmin , RemoveAdmin} = require("../Controller/AuthController");
 const userMiddleware = require("../Middleware/userMiddleware");
 const Cart = require("../Model/Cart");
 const adminMiddleware = require("../Middleware/adminMiddleware");
@@ -28,5 +28,6 @@ Auth.get('/check',userMiddleware,async (req,res)=>{
 
 });
 Auth.post("/add/admin",adminMiddleware,AddAdmin);  
+Auth.delete("/remove/admin/:id",adminMiddleware,RemoveAdmin)
 
 module.exports = Auth

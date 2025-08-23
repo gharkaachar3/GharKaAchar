@@ -11,25 +11,12 @@ export default function AddProduct() {
   const isAdmin =
     isAuthenticated &&
     String(user?.user?.role || user?.role || "").toLowerCase() === "admin";
-
+    const { categories  } = useSelector(state=>state.getdata);
   const [preview, setPreview] = useState(null);
   const [msg, setMsg] = useState("");
   const [msgType, setMsgType] = useState("info");
 
-  // ✅ Hardcoded categories
-  const categories = useMemo(
-    () => [
-      "Pickles",
-      "Chutneys",
-      "Desserts",
-      "Snacks",
-      "Specialty",
-      "Spreads",
-      "Beverages",
-      "Others",
-    ],
-    []
-  );
+
 
   const {
     register,
@@ -86,7 +73,6 @@ export default function AddProduct() {
         }
       });
 
-      console.log(uploadResponse)
       const reqSendData = {
       product_name: name ,
       product_category: category ,
@@ -97,7 +83,6 @@ export default function AddProduct() {
       product_price:price
       }
       const saveData = await axiosClient.post("/admin/add",reqSendData);
-      console.log(reqSendData);
       await new Promise((r) => setTimeout(r, 800)); 
       setMsgType("success");
       setMsg("✅ Product submitted successfully (integrate backend API)");
@@ -193,8 +178,8 @@ export default function AddProduct() {
                   {...register("category", { required: "Category is required" })}
                 >
                   <option value="">— Select Category —</option>
-                  {categories.map((c) => (
-                    <option key={c} value={c}>{c}</option>
+                  {categories?.data?.map((c) => (
+                    <option key={c} value={c.category_name}>{c.category_name}</option>
                   ))}
                 </select>
                 {errors.category && <p className={errorCls}>{errors.category.message}</p>}

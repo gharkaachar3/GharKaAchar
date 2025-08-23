@@ -80,8 +80,8 @@ const login = async (req, res) => {
     try {
         const { email, password } = req.body;
         if (!email || !password) throw new Error("Invalid credentials");
-
-        const userInfo = await User.findOne({ email: email.toLowerCase() });
+        // const searchEmail = email.toLowerCase()
+        const userInfo = await User.findOne({ email: email });
         if (!userInfo) return sendError(res, "User not found!", 404);
 
         const isPasswordCorrect = await bcrypt.compare(password, userInfo.password);
@@ -163,6 +163,7 @@ const resetPassword = async (req, res) => {
 
 const AddAdmin = async(req,res)=>{
     try{
+        console.log(req.body)
      const {role} = req.user;
      if(role !== "admin") throw new Error("your not a admin");  
      const {email,password} = req.body;
@@ -172,15 +173,34 @@ const AddAdmin = async(req,res)=>{
      if(!compare) throw new Error("invalid password");
      find.role = "admin";
      await find.save();
-     const save = await Admin.create(find);
      res.status(201).json({
         message:"admin created!"
-     })
+     });
     }catch(e){
+        console.log(e.message);
         res.status(400).json({
             message:e.message
         })
     }
 }
 
-module.exports = { register, login, logout, deleteUser, resetPassword , AddAdmin };
+const RemoveAdmin = async (req,res)=>{
+    try{
+        const { id} = req.params;
+        const {role} = req.user;
+        if(role!=="admin") throw new Error("sorry you cant demote your not a admin");
+        const user = await User.findById(id);
+        user.role = "user";
+        user.save();
+        res.status(200).json({
+            message:"admin removed !"
+        })
+    }catch(e){
+        console.log(e.message);
+        res.status(400).json({
+            message:e.message
+        })
+    }
+}
+
+module.exports = { register, login, logout, deleteUser, resetPassword , AddAdmin , RemoveAdmin };

@@ -12,9 +12,7 @@ export default function DeleteBanner() {
   const [showConfirmModal, setShowConfirmModal] = useState(null);
   const [notification, setNotification] = useState(null);
 
-  useEffect(() => {
-    dispatch(GetAllbanners());
-  }, [dispatch]);
+
 
   const { data } = useSelector(state => state.getdata.banners); // Add loading here
   const { error , loading } = useSelector(state => state.getdata);

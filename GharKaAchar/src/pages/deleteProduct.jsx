@@ -10,10 +10,6 @@ export default function DeleteProduct() {
   const dispatch = useDispatch();
   const [deletingId, setDeletingId] = useState(null);
 
-  useEffect(() => {
-    dispatch(GetAllProduct());
-  }, [dispatch]);
-
   if (loading) return <h1 className="text-center text-lg">Loading...</h1>;
   if (error) return <h1 className="text-center text-lg text-red-600">{error}</h1>;
 

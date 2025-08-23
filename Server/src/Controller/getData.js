@@ -1,6 +1,7 @@
 const categories = require("../Model/AddCategories")
 const Product = require("../Model/AddProduct");
 const banner = require("../Model/Addbanners");
+const user = require("../Model/User");
 
 const getAllProducts = async (req,res)=>{
     try{
@@ -50,8 +51,26 @@ const getAllbanners = async (req,res)=>{
     }
 }
 
+const getAllUsers = async (req, res) => {
+  try {
+    // console.log("hello")
+    // Fetch users where role is 'admin'
+    const ResData = await user.find({});
 
-module.exports = { getAllProducts , getAllcategories , getAllbanners }
+
+    res.status(200).json({
+      message: "Here’s your admin users data!",
+      data: ResData,
+    });
+  } catch (e) {
+    res.status(400).json({
+      message: "Internal server error: " + e.message,
+      data: null,
+    });
+  }
+};
+
+module.exports = { getAllProducts , getAllcategories , getAllbanners ,getAllUsers }
 
 
 

@@ -23,8 +23,8 @@ app.use(cors({
     }
   },
   credentials: true
-}));
-
+})); 
+ 
 // Routes
 app.use('/user', Auth);
 app.use('/cart', CartRouter);

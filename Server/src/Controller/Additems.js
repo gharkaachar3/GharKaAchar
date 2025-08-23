@@ -160,7 +160,7 @@ const addcategory = async (req,res)=>{
   try{
     console.log(req.body);
     const { category_name , category_image , category_image_publicID } = req.body;
-    if( !category_image || !category_name || !category_image_publicID  ) throw new Error("field is messing");
+    // if( !category_image || !category_name || !category_image_publicID  ) throw new Error("field is messing");
     // if(!req.user.role === 'admin') throw new Error("invalid user");
     const saveCategory = await categories.create(req.body);
     res.status(201).json({

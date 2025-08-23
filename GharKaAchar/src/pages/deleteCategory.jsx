@@ -2,7 +2,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
-import { getAllcategories } from "../redux/getdata";
+// import { getAllcategories } from "../redux/getdata";
 import axiosClient from "../utils/axiosClient";
 
 // Loading shimmer row
@@ -98,10 +98,6 @@ export default function DeleteCategories() {
     }
   }, [list, busyId]);
 
-  // Initial fetch
-  useEffect(() => {
-    dispatch(getAllcategories());
-  }, [dispatch]);
 
   const handleDeleteSubmit = async ({ id, public_id }, original) => {
     setLocalError(null);
