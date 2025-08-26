@@ -20,11 +20,10 @@ const HeartIcon = () => (
 );
 
 const FilterIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.414A1 1 0 013 6.707V4z" />
   </svg>
 );
-
 
 // Enhanced Toast Component
 const Toast = ({ message, type = 'success', onClose }) => (
@@ -305,7 +304,7 @@ export default function CategoryProducts() {
           transition={{ duration: 0.6, delay: 0.2 }}
         >
           <div className="flex items-center gap-2">
-            <FilterIcon  />
+            <FilterIcon />
             <span className="font-medium text-gray-700">Filters:</span>
           </div>
           
@@ -313,7 +312,7 @@ export default function CategoryProducts() {
           <select 
             value={sortBy} 
             onChange={(e) => setSortBy(e.target.value)}
-            className="px-4 py-2 text-black border border-amber-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 bg-white"
+            className="px-4 py-2 border border-amber-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 bg-white"
           >
             <option value="name">Sort by Name</option>
             <option value="price-low">Price: Low to High</option>
@@ -324,7 +323,7 @@ export default function CategoryProducts() {
           <select 
             value={filterPrice} 
             onChange={(e) => setFilterPrice(e.target.value)}
-            className="px-4 py-2 border border-amber-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 bg-white text-black"
+            className="px-4 py-2 border border-amber-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 bg-white"
           >
             <option value="all">All Prices</option>
             <option value="low">Under ₹200</option>

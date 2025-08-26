@@ -7,9 +7,8 @@ import { addToCart } from '../redux/CartSlice';
 import { motion, AnimatePresence } from 'framer-motion';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-import CleanHeader from './Header';
 
-// Icons (keeping original)
+// Icons
 const MenuIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
@@ -34,7 +33,73 @@ const HeartIcon = () => (
   </svg>
 );
 
-// ✅ Enhanced Star Rating Component with Dynamic Rendering
+const RefreshIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+  </svg>
+);
+
+const AlertIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.664-.833-2.464 0L4.732 18.5c-.77.833.192 2.5 1.732 2.5z" />
+  </svg>
+);
+
+const EmptyBoxIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" className="h-20 w-20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M9 1L4 6l5 5" />
+  </svg>
+);
+
+const InstagramIcon = () => (
+  <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+  </svg>
+);
+// ✅ Fast & Smooth Shimmer Components
+const ShimmerBanner = () => (
+  <div className="h-[40vh] md:h-[50vh] w-full bg-gradient-to-r from-amber-100 via-orange-100 to-yellow-100 relative overflow-hidden">
+    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/60 to-transparent animate-shimmer transform -skew-x-12"></div>
+    <div className="absolute bottom-8 left-8 z-20 space-y-3">
+      <div className="w-48 h-6 bg-amber-200/60 rounded-lg animate-pulse"></div>
+      <div className="w-32 h-4 bg-orange-200/60 rounded-lg animate-pulse"></div>
+      <div className="w-28 h-8 bg-yellow-200/60 rounded-full animate-pulse"></div>
+    </div>
+  </div>
+);
+
+const ShimmerCategory = () => (
+  <div className="flex flex-col items-center flex-shrink-0 w-40 sm:w-44 lg:w-48">
+    <div className="h-28 w-28 sm:h-32 sm:w-32 lg:h-36 lg:w-36 rounded-full bg-gradient-to-br from-amber-200 via-orange-200 to-yellow-200 mb-6 relative overflow-hidden border-4 border-amber-300/50">
+      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/70 to-transparent animate-shimmer transform -skew-x-12"></div>
+    </div>
+    <div className="w-24 h-4 bg-amber-200 rounded-lg mb-2 animate-pulse"></div>
+    <div className="w-32 h-3 bg-orange-200 rounded-lg animate-pulse"></div>
+  </div>
+);
+
+const ShimmerProductCard = () => (
+  <div className="bg-white rounded-xl overflow-hidden shadow-lg border border-amber-200/50">
+    <div className="aspect-square bg-gradient-to-br from-amber-100 via-orange-100 to-yellow-100 relative overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/60 to-transparent animate-shimmer transform -skew-x-12"></div>
+    </div>
+    <div className="p-4">
+      <div className="w-full h-4 bg-amber-200 rounded-lg mb-2 animate-pulse"></div>
+      <div className="w-3/4 h-3 bg-orange-200 rounded-lg mb-3 animate-pulse"></div>
+      <div className="flex gap-1 mb-3">
+        {[...Array(5)].map((_, i) => (
+          <div key={i} className="w-3 h-3 bg-yellow-200 rounded animate-pulse"></div>
+        ))}
+      </div>
+      <div className="flex justify-between items-center">
+        <div className="w-16 h-6 bg-amber-300 rounded-lg animate-pulse"></div>
+        <div className="w-12 h-8 bg-orange-300 rounded-full animate-pulse"></div>
+      </div>
+    </div>
+  </div>
+);
+
+// Star Rating Component
 const StarIcon = ({ filled = false, size = 16 }) => (
   <svg 
     xmlns="http://www.w3.org/2000/svg" 
@@ -47,9 +112,7 @@ const StarIcon = ({ filled = false, size = 16 }) => (
   </svg>
 );
 
-// ✅ Dynamic Rating Component - Only Shows if Rating Exists
 const ProductRating = ({ rating, reviewCount, size = 14 }) => {
-  // Only render if rating exists and is valid
   if (!rating || rating === 0 || rating === null || rating === undefined || isNaN(rating)) {
     return null;
   }
@@ -77,18 +140,7 @@ const ProductRating = ({ rating, reviewCount, size = 14 }) => {
   );
 };
 
-// Loading Spinner Component
-const LoadingSpinner = () => (
-  <div className="flex items-center justify-center p-8">
-    <motion.div
-      className="w-12 h-12 border-4 border-amber-200 border-t-amber-600 rounded-full"
-      animate={{ rotate: 360 }}
-      transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-    />
-  </div>
-);
-
-// Enhanced Toast Component
+// Toast Component
 const Toast = ({ message, type = 'success', onClose }) => (
   <AnimatePresence>
     <motion.div
@@ -140,22 +192,23 @@ const staggerContainer = {
   }
 };
 
-const scaleOnHover = {
-  hover: { 
-    scale: 1.05,
-    transition: { duration: 0.2, ease: "easeOut" }
-  },
-  tap: { scale: 0.95 }
-};
-
 export default function Homes() {
-  const [loading, setLoading] = useState(true);
+  const [localLoading, setLocalLoading] = useState(true);
   const [toast, setToast] = useState(null);
   const [visibleProducts, setVisibleProducts] = useState(8);
   const [favorites, setFavorites] = useState(new Set());
+  const [peopleAlsoLoved, setPeopleAlsoLoved] = useState([]);
 
   const { sampleProducts, recommendedProducts, cart } = useSelector((s) => s.cart);
   const dispatch = useDispatch();
+  const { data, error, loading, categories, banners } = useSelector(state => state.getdata);
+  
+  console.log('Redux State:', {
+    data: data,
+    loading: loading,
+    error: error,
+    localLoading: localLoading
+  });
 
   useEffect(() => {
     AOS.init({
@@ -165,13 +218,40 @@ export default function Homes() {
       offset: 100,
     });
 
-    const timer = setTimeout(() => setLoading(false), 1200);
+    // Set people also loved data
+    if (data?.data && data.data.length > 0) {
+      const shuffled = [...data.data].sort(() => 0.5 - Math.random());
+      setPeopleAlsoLoved(shuffled.slice(0, 5));
+    }
+
+    // Set local loading timer - REDUCED TO 800ms
+    const timer = setTimeout(() => {
+      console.log('Local loading timer completed');
+      setLocalLoading(false);
+    }, 800);
+
     return () => clearTimeout(timer);
-  }, []);
+  }, [data]);
+
+  // ✅ KEY FIX: Better loading condition check
+  const isLoading = localLoading || loading || !data || (data && (!data.data || data.data.length === 0));
+
+  console.log('Loading States:', {
+    localLoading,
+    reduxLoading: loading,
+    hasData: !!data?.data?.length,
+    isLoading
+  });
 
   const handleAdd = (p) => {
-    dispatch(addToCart({ id: p.id, name: p.name, price: p.price, image: p.image, qty: 1 }));
-    setToast({ message: `🛒 ${p.name} added to cart!`, type: 'success' });
+    dispatch(addToCart({ 
+      id: p._id || p.id, 
+      name: p.product_name || p.name, 
+      price: p.product_price || p.price, 
+      image: p.product_image || p.image, 
+      qty: 1 
+    }));
+    setToast({ message: `🛒 ${p.product_name || p.name} added to cart!`, type: 'success' });
     setTimeout(() => setToast(null), 3000);
   };
 
@@ -191,35 +271,149 @@ export default function Homes() {
   };
 
   const loadMoreProducts = () => {
-    setVisibleProducts(prev => Math.min(prev + 4, sampleProducts.length));
+    setVisibleProducts(prev => Math.min(prev + 4, data?.data?.length || 0));
   };
 
-  if (loading) {
+  const handleRefresh = () => {
+    window.location.reload();
+  };
+
+  // ✅ FIXED: Show shimmer only when actually loading
+  if (isLoading && !error) {
+    console.log('Showing shimmer loading state');
     return (
-      <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 flex items-center justify-center">
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="text-center"
-        >
-          <motion.div
-            className="w-20 h-20 border-6 border-amber-200 border-t-amber-600 rounded-full mx-auto mb-6"
-            animate={{ rotate: 360 }}
-            transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-          />
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
-          >
-            <h2 className="text-2xl font-bold text-amber-800 mb-2">GharKaAchar</h2>
-            <p className="text-amber-600 text-lg">Loading delicious products...</p>
-          </motion.div>
-        </motion.div>
+      <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50">
+        <ShimmerBanner />
+        
+        <div className="container mx-auto px-4 py-16">
+          <div className="text-center mb-16">
+            <div className="w-64 h-8 bg-amber-200 rounded-lg mx-auto mb-4 animate-pulse"></div>
+            <div className="w-96 h-4 bg-orange-200 rounded-lg mx-auto animate-pulse"></div>
+          </div>
+          
+          <div className="flex overflow-x-auto gap-6 sm:gap-8 pb-8">
+            {[...Array(6)].map((_, index) => (
+              <ShimmerCategory key={index} />
+            ))}
+          </div>
+        </div>
+
+        <div className="bg-white/50 py-12">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-12">
+              <div className="w-48 h-8 bg-amber-200 rounded-lg mx-auto mb-4 animate-pulse"></div>
+            </div>
+            <div className="flex overflow-x-auto gap-4 sm:gap-6 pb-6">
+              {[...Array(5)].map((_, index) => (
+                <div key={index} className="flex-shrink-0 w-48 sm:w-56">
+                  <ShimmerProductCard />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className="container mx-auto px-4 py-16">
+          <div className="text-center mb-12">
+            <div className="w-48 h-8 bg-amber-200 rounded-lg mx-auto mb-4 animate-pulse"></div>
+          </div>
+          
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
+            {[...Array(8)].map((_, index) => (
+              <ShimmerProductCard key={index} />
+            ))}
+          </div>
+        </div>
       </div>
     );
   }
 
+  // Error State
+  if (error) {
+    console.log('Showing error state:', error);
+    return (
+      <motion.div 
+        className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
+        <div className="container mx-auto px-4 py-16 flex flex-col items-center justify-center min-h-[60vh]">
+          <motion.div
+            className="text-red-500 mb-8"
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 0.5 }}
+          >
+            <AlertIcon />
+          </motion.div>
+          <h2 className="text-3xl font-bold text-gray-800 mb-4 text-center">
+            Oops! Something went wrong
+          </h2>
+          <p className="text-gray-600 text-lg text-center max-w-md mb-8">
+            We couldn't load the products right now. Please refresh the page to try again.
+          </p>
+          <motion.button
+            onClick={handleRefresh}
+            className="inline-flex items-center gap-3 bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white px-8 py-3 rounded-xl font-bold text-lg transition-all shadow-lg hover:shadow-xl"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <RefreshIcon />
+            Refresh Page
+          </motion.button>
+          {error.message && (
+            <p className="text-sm text-red-500 mt-4 text-center">
+              Error: {error.message}
+            </p>
+          )}
+        </div>
+      </motion.div>
+    );
+  }
+
+  // No Data State
+  if (!data?.data || data.data.length === 0) {
+    console.log('Showing no data state');
+    return (
+      <motion.div 
+        className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
+        <div className="container mx-auto px-4 py-16 flex flex-col items-center justify-center min-h-[60vh]">
+          <motion.div
+            className="text-amber-600 mb-8"
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 0.5 }}
+          >
+            <EmptyBoxIcon />
+          </motion.div>
+          <h2 className="text-3xl font-bold text-gray-800 mb-4 text-center">
+            No Products Available
+          </h2>
+          <p className="text-gray-600 text-lg text-center max-w-md mb-8">
+            We're currently updating our inventory. Please check back later for fresh pickles and chutneys!
+          </p>
+          <motion.button
+            onClick={handleRefresh}
+            className="inline-flex items-center gap-3 bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white px-8 py-3 rounded-xl font-bold text-lg transition-all shadow-lg hover:shadow-xl"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <RefreshIcon />
+            Check Again
+          </motion.button>
+        </div>
+      </motion.div>
+    );
+  }
+
+  // ✅ SUCCESS STATE - Show actual content
+  console.log('Showing main content with data:', data.data.length, 'products');
+  
   return (
     <motion.div 
       className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50"
@@ -227,6 +421,7 @@ export default function Homes() {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
+      
       {/* Toast Notification */}
       {toast && (
         <Toast
@@ -236,7 +431,7 @@ export default function Homes() {
         />
       )}
       
-      {/* Enhanced Banner Carousel */}
+      {/* Banner Carousel */}
       <motion.div 
         className="h-[40vh] md:h-[50vh] w-full bg-gradient-to-r from-amber-800 to-orange-800 overflow-hidden relative"
         initial={{ opacity: 0, scale: 1.1 }}
@@ -253,61 +448,18 @@ export default function Homes() {
           interval={4000}
           showThumbs={false}
           className="h-full w-full"
-          renderArrowPrev={(onClickHandler, hasPrev, label) =>
-            hasPrev && (
-              <motion.button
-                type="button"
-                onClick={onClickHandler}
-                title={label}
-                className="absolute left-4 top-1/2 transform -translate-y-1/2 z-20 bg-white/20 backdrop-blur-sm text-white p-3 rounded-full hover:bg-white/30 transition-all"
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-              >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                </svg>
-              </motion.button>
-            )
-          }
-          renderArrowNext={(onClickHandler, hasNext, label) =>
-            hasNext && (
-              <motion.button
-                type="button"
-                onClick={onClickHandler}
-                title={label}
-                className="absolute right-4 top-1/2 transform -translate-y-1/2 z-20 bg-white/20 backdrop-blur-sm text-white p-3 rounded-full hover:bg-white/30 transition-all"
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-              >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </motion.button>
-            )
-          }
-          renderIndicator={(onClickHandler, isSelected, index, label) => (
-            <motion.button
-              className={`inline-block w-3 h-3 mx-1 rounded-full transition-all ${
-                isSelected ? 'bg-white scale-125' : 'bg-white/50 hover:bg-white/75'
-              }`}
-              onClick={onClickHandler}
-              whileHover={{ scale: 1.2 }}
-              whileTap={{ scale: 0.9 }}
-              aria-label={`${label} ${index + 1}`}
-            />
-          )}
         >
-          {sampleProducts.slice(0, 5).map((product, index) => (
+          {(banners?.data?.length > 0 ? banners.data : data.data.slice(0, 5)).map((banner, index) => (
             <motion.div 
-              key={product.id} 
+              key={banner._id || banner.id || index} 
               className="h-full w-full relative"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: index * 0.1 }}
             >
               <img
-                src={product.image}
-                alt={product.name}
+                src={banner.banner_image || banner.product_image || banner.image}
+                alt={banner.banner_category || banner.product_name || banner.name}
                 className="h-full w-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent z-10" />
@@ -317,15 +469,19 @@ export default function Homes() {
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.5 }}
               >
-                <h3 className="text-3xl md:text-4xl font-bold mb-2">{product.name}</h3>
-                <p className="text-amber-200 text-lg mb-4">{product.category}</p>
+                <h3 className="text-3xl md:text-4xl font-bold mb-2">
+                  {banner.banner_category || banner.product_name || banner.name}
+                </h3>
+                <p className="text-amber-200 text-lg mb-4">
+                  Premium Quality Products
+                </p>
                 <motion.button
                   className="bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white px-6 py-3 rounded-full font-semibold transition-all shadow-lg"
                   whileHover={{ scale: 1.05, y: -2 }}
                   whileTap={{ scale: 0.95 }}
-                  onClick={() => handleAdd(product)}
+                  onClick={() => banner.product_price && handleAdd(banner)}
                 >
-                  Order Now - ₹{product.price}
+                  {banner.product_price ? `Order Now - ₹${banner.product_price}` : 'Explore Collection'}
                 </motion.button>
               </motion.div>
             </motion.div>
@@ -333,259 +489,211 @@ export default function Homes() {
         </Carousel>
       </motion.div>
 
-{/* ✅ Enhanced Categories Section - Clean & Simple */}
-<motion.div 
-  className="container mx-auto px-4 py-16 overflow-hidden"
-  variants={staggerContainer}
-  initial="hidden"
-  whileInView="visible"
-  viewport={{ once: true }}
->
-  <motion.div className="text-center mb-16" variants={fadeInUp}>
-    <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
-      Our <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-orange-600">Categories</span>
-    </h2>
-    <p className="text-gray-600 text-lg max-w-2xl mx-auto leading-relaxed">
-      Discover authentic flavors crafted with traditional recipes and premium ingredients passed down through generations
-    </p>
-    <motion.div 
-      className="w-24 h-1 bg-gradient-to-r from-amber-500 to-orange-500 mx-auto mt-6 rounded-full"
-      initial={{ scaleX: 0 }}
-      whileInView={{ scaleX: 1 }}
-      viewport={{ once: true }}
-      transition={{ delay: 0.8, duration: 0.8 }}
-    />
-  </motion.div>
-
-  <div className="relative">
-    {/* ✅ Clean Horizontal Scrollable Container */}
-    <motion.div 
-      className="flex overflow-x-auto overflow-y-hidden gap-6 sm:gap-8 pb-8 scroll-smooth hide-scrollbar snap-x snap-mandatory"
-      variants={staggerContainer}
-      style={{
-        scrollPadding: '0 20px',
-        scrollbarWidth: 'none',
-        msOverflowStyle: 'none'
-      }}
-    >
-      {sampleProducts.map((product, index) => (
-        <motion.div
-          key={product.id}
-          className="flex flex-col items-center flex-shrink-0 w-40 sm:w-44 lg:w-48 group cursor-pointer snap-start"
-          variants={fadeInUp}
-          whileHover={{ y: -12 }}
-          data-aos="fade-up"
-          data-aos-delay={index * 100}
-        >
-          {/* ✅ Enhanced Category Image Container */}
+      {/* Categories Section */}
+      <motion.div 
+        className="container mx-auto px-4 py-16 overflow-hidden"
+        variants={staggerContainer}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+      >
+        <motion.div className="text-center mb-16" variants={fadeInUp}>
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
+            Our <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-orange-600">Categories</span>
+          </h2>
+          <p className="text-gray-600 text-lg max-w-2xl mx-auto leading-relaxed">
+            Discover authentic flavors crafted with traditional recipes and premium ingredients passed down through generations
+          </p>
           <motion.div 
-            className="relative h-28 w-28 sm:h-32 sm:w-32 lg:h-36 lg:w-36 rounded-full overflow-hidden border-4 border-amber-300 group-hover:border-amber-500 transition-all duration-500 shadow-lg group-hover:shadow-2xl mb-6"
-            whileHover={{ 
-              scale: 1.08,
-              boxShadow: "0 25px 50px rgba(245, 158, 11, 0.25)",
-              borderColor: "#D97706"
-            }}
-            whileTap={{ scale: 0.95 }}
+            className="w-24 h-1 bg-gradient-to-r from-amber-500 to-orange-500 mx-auto mt-6 rounded-full"
+            initial={{ scaleX: 0 }}
+            whileInView={{ scaleX: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.8, duration: 0.8 }}
+          />
+        </motion.div>
+
+        <div className="relative">
+          <motion.div 
+            className="flex overflow-x-auto overflow-y-hidden gap-6 sm:gap-8 pb-8 scroll-smooth hide-scrollbar snap-x snap-mandatory"
+            variants={staggerContainer}
           >
-            <img
-              src={product.image}
-              alt={product.name}
-              className="w-full h-full object-cover group-hover:scale-125 transition-transform duration-700"
-            />
-            
-            {/* ✅ Enhanced Overlay Effects */}
-            <div className="absolute inset-0 bg-gradient-to-t from-amber-900/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-            
-            {/* ✅ Improved Hover Label */}
-            <motion.div 
-              className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-              initial={{ scale: 0.8 }}
-              whileHover={{ scale: 1 }}
-            >
-              <span className="bg-white/90 backdrop-blur-md text-amber-800 px-4 py-2 rounded-full text-sm font-bold shadow-lg border border-amber-200">
-                Explore
-              </span>
+            {(categories?.data?.length > 0 ? categories.data : data.data.slice(0, 8)).map((category, index) => (
+              <Link key={category._id || category.id || index} to={`/category/${category.category_name || category.product_category || category.category}`}>
+                <motion.div
+                  className="flex flex-col items-center flex-shrink-0 w-40 sm:w-44 lg:w-48 group cursor-pointer snap-start"
+                  variants={fadeInUp}
+                  whileHover={{ y: -12 }}
+                  data-aos="fade-up"
+                  data-aos-delay={index * 100}
+                >
+                  <motion.div 
+                    className="relative h-28 w-28 sm:h-32 sm:w-32 lg:h-36 lg:w-36 rounded-full overflow-hidden border-4 border-amber-300 group-hover:border-amber-500 transition-all duration-500 shadow-lg group-hover:shadow-2xl mb-6"
+                    whileHover={{ 
+                      scale: 1.08,
+                      boxShadow: "0 25px 50px rgba(245, 158, 11, 0.25)",
+                      borderColor: "#D97706"
+                    }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <img
+                      src={category.category_image || category.product_image || category.image}
+                      alt={category.category_name || category.product_name || category.name}
+                      className="w-full h-full object-cover group-hover:scale-125 transition-transform duration-700"
+                    />
+                    
+                    <div className="absolute inset-0 bg-gradient-to-t from-amber-900/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                    
+                    <motion.div 
+                      className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                      initial={{ scale: 0.8 }}
+                      whileHover={{ scale: 1 }}
+                    >
+                      <span className="bg-white/90 backdrop-blur-md text-amber-800 px-4 py-2 rounded-full text-sm font-bold shadow-lg border border-amber-200">
+                        Explore
+                      </span>
+                    </motion.div>
+
+                    <motion.div 
+                      className="absolute -top-2 -right-2 bg-gradient-to-r from-red-500 to-pink-500 text-white w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold shadow-lg"
+                      initial={{ scale: 0, rotate: -180 }}
+                      animate={{ scale: 1, rotate: 0 }}
+                      transition={{ delay: index * 0.1 + 0.5, type: "spring", bounce: 0.5 }}
+                    >
+                      {index + 1}
+                    </motion.div>
+                  </motion.div>
+
+                  <motion.div 
+                    className="text-center space-y-2"
+                    whileHover={{ scale: 1.05 }}
+                  >
+                    <h3 className="font-bold text-gray-800 text-base sm:text-lg group-hover:text-amber-700 transition-colors duration-300">
+                      {category.category_name || category.product_category || category.category}
+                    </h3>
+                  </motion.div>
+                </motion.div>
+              </Link>
+            ))}
+          </motion.div>
+        </div>
+      </motion.div>
+
+      {/* People Also Loved Section */}
+      {peopleAlsoLoved.length > 0 && (
+        <motion.div 
+          className="bg-white/50 backdrop-blur-sm py-12"
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+        >
+          <div className="container mx-auto px-4">
+            <motion.div className="text-center mb-12" variants={fadeInUp}>
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
+                People Also <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-orange-600">Loved</span>
+              </h2>
+              <p className="text-gray-600 text-lg">
+                Trending favorites picked by our community
+              </p>
             </motion.div>
 
-            {/* ✅ Category Badge */}
             <motion.div 
-              className="absolute -top-2 -right-2 bg-gradient-to-r from-red-500 to-pink-500 text-white w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold shadow-lg"
-              initial={{ scale: 0, rotate: -180 }}
-              animate={{ scale: 1, rotate: 0 }}
-              transition={{ delay: index * 0.1 + 0.5, type: "spring", bounce: 0.5 }}
+              className="flex overflow-x-auto overflow-y-hidden gap-4 sm:gap-6 pb-6 scroll-smooth hide-scrollbar"
+              variants={staggerContainer}
             >
-              {index + 1}
+              {peopleAlsoLoved.map((product, index) => (
+                <motion.div
+                  key={product._id}
+                  className="flex-shrink-0 w-48 sm:w-56 bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-100"
+                  variants={fadeInUp}
+                  whileHover={{ 
+                    y: -8,
+                    boxShadow: "0 25px 50px rgba(0,0,0,0.15)" 
+                  }}
+                  whileTap={{ scale: 0.98 }}
+                  data-aos="fade-right"
+                  data-aos-delay={index * 100}
+                >
+                  <Link to={`/product/${product._id}`}>
+                    <div className="relative h-40 w-full overflow-hidden">
+                      <img
+                        src={product.product_image}
+                        alt={product.product_name}
+                        className="w-full h-full object-cover hover:scale-110 transition-transform duration-500"
+                      />
+                      <div className="absolute top-2 right-2">
+                        <motion.button
+                          className={`p-1.5 rounded-full ${
+                            favorites.has(product._id) 
+                              ? 'bg-red-500 text-white' 
+                              : 'bg-white/80 text-gray-600 hover:text-red-500'
+                          } backdrop-blur-sm transition-all shadow-md`}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            toggleFavorite(product._id);
+                          }}
+                          whileHover={{ scale: 1.1 }}
+                          whileTap={{ scale: 0.9 }}
+                        >
+                          <HeartIcon />
+                        </motion.button>
+                      </div>
+                      <div className="absolute bottom-2 left-2">
+                        <span className="bg-amber-500 text-white px-2 py-0.5 rounded-full text-xs font-semibold">
+                          Popular
+                        </span>
+                      </div>
+                    </div>
+                    
+                    <div className="p-4">
+                      <h3 className="font-bold text-gray-800 text-sm mb-2 line-clamp-2 leading-tight">
+                        {product.product_name}
+                      </h3>
+                      
+                      {product.product_description && (
+                        <p className="text-gray-600 text-xs mb-2 line-clamp-2">
+                          {product.product_description}
+                        </p>
+                      )}
+                      
+                      <ProductRating 
+                        rating={product.rating} 
+                        reviewCount={product.reviewCount}
+                        size={12}
+                      />
+                      
+                      <div className="flex items-center justify-between mt-3">
+                        <div>
+                          <span className="text-lg font-bold text-amber-600">₹{product.product_price}</span>
+                          {product.product_quantity && (
+                            <div className="text-gray-500 text-xs">{product.product_quantity}</div>
+                          )}
+                        </div>
+                        <motion.button
+                          className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white px-3 py-1.5 rounded-full text-xs font-semibold transition-all shadow-md"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            handleAdd(product);
+                          }}
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                        >
+                          Add
+                        </motion.button>
+                      </div>
+                    </div>
+                  </Link>
+                </motion.div>
+              ))}
             </motion.div>
-
-            {/* ✅ Pulse Ring Effect */}
-            <motion.div
-              className="absolute inset-0 rounded-full border-2 border-amber-400/50 scale-110"
-              initial={{ scale: 1, opacity: 0 }}
-              animate={{ 
-                scale: [1, 1.15, 1],
-                opacity: [0, 0.6, 0]
-              }}
-              transition={{ 
-                duration: 3,
-                repeat: Infinity,
-                delay: index * 0.2
-              }}
-            />
-          </motion.div>
-
-          {/* ✅ Clean Category Info */}
-          <motion.div 
-            className="text-center space-y-2"
-            whileHover={{ scale: 1.05 }}
-          >
-            <h3 className="font-bold text-gray-800 text-base sm:text-lg group-hover:text-amber-700 transition-colors duration-300">
-              {product.category}
-            </h3>
-            <p className="text-amber-600 text-sm font-medium leading-tight">
-              {product.name}
-            </p>
-          </motion.div>
+          </div>
         </motion.div>
-      ))}
-    </motion.div>
+      )}
 
-    {/* ✅ Navigation Dots (Optional) */}
-    <motion.div 
-      className="flex justify-center mt-8 space-x-2"
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
-      viewport={{ once: true }}
-      transition={{ delay: 1 }}
-    >
-      {sampleProducts.slice(0, 5).map((_, index) => (
-        <motion.div
-          key={index}
-          className="w-2 h-2 rounded-full bg-amber-300"
-          whileHover={{ scale: 1.5, backgroundColor: "#D97706" }}
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          transition={{ delay: index * 0.1 + 1.2 }}
-        />
-      ))}
-    </motion.div>
-  </div>
-</motion.div>
-
-{/* ✅ People Also Viewed Section - Horizontal X-axis Scrollable */}
-<motion.div 
-  className="bg-white/50 backdrop-blur-sm py-12"
-  variants={staggerContainer}
-  initial="hidden"
-  whileInView="visible"
-  viewport={{ once: true }}
->
-  <div className="container mx-auto px-4">
-    <motion.div className="text-center mb-12" variants={fadeInUp}>
-      <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
-        People Also <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-orange-600">Loved</span>
-      </h2>
-      <p className="text-gray-600 text-lg">
-        Trending favorites picked by our community
-      </p>
-    </motion.div>
-
-    {/* ✅ Horizontal Scrollable Container */}
-    <motion.div 
-      className="flex overflow-x-auto overflow-y-hidden gap-4 sm:gap-6 pb-6 scroll-smooth hide-scrollbar"
-      variants={staggerContainer}
-      style={{ 
-        scrollbarWidth: 'thin',
-        scrollbarColor: '#D97706 #F3F4F6'
-      }}
-    >
-      {recommendedProducts.map((product, index) => (
-        <motion.div
-          key={product.id}
-          className="flex-shrink-0 w-48 sm:w-56 bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-100"
-          variants={fadeInUp}
-          whileHover={{ 
-            y: -8,
-            boxShadow: "0 25px 50px rgba(0,0,0,0.15)" 
-          }}
-          whileTap={{ scale: 0.98 }}
-          data-aos="fade-right"
-          data-aos-delay={index * 100}
-        >
-          <Link to={`/product/${product.id}`}>
-            <div className="relative h-40 w-full overflow-hidden">
-              <img
-                src={product.image}
-                alt={product.name}
-                className="w-full h-full object-cover hover:scale-110 transition-transform duration-500"
-              />
-              <div className="absolute top-2 right-2">
-                <motion.button
-                  className={`p-1.5 rounded-full ${
-                    favorites.has(product.id) 
-                      ? 'bg-red-500 text-white' 
-                      : 'bg-white/80 text-gray-600 hover:text-red-500'
-                  } backdrop-blur-sm transition-all shadow-md`}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    toggleFavorite(product.id);
-                  }}
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                >
-                  <HeartIcon />
-                </motion.button>
-              </div>
-              <div className="absolute bottom-2 left-2">
-                <span className="bg-amber-500 text-white px-2 py-0.5 rounded-full text-xs font-semibold">
-                  Popular
-                </span>
-              </div>
-            </div>
-            
-            <div className="p-4">
-              <h3 className="font-bold text-gray-800 text-sm mb-2 line-clamp-2 leading-tight">
-                {product.name}
-              </h3>
-              
-              {/* ✅ Dynamic Rating - Only shows if product has rating */}
-              <ProductRating 
-                rating={product.rating} 
-                reviewCount={product.reviewCount}
-                size={12}
-              />
-              
-              <div className="flex items-center justify-between mt-3">
-                <div>
-                  <span className="text-lg font-bold text-amber-600">₹{product.price}</span>
-                  {product.originalPrice && (
-                    <div className="text-gray-400 text-xs line-through">₹{product.originalPrice}</div>
-                  )}
-                </div>
-                <motion.button
-                  className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white px-3 py-1.5 rounded-full text-xs font-semibold transition-all shadow-md"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    handleAdd(product);
-                  }}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  Add
-                </motion.button>
-              </div>
-            </div>
-          </Link>
-        </motion.div>
-      ))}
-    </motion.div>
-  </div>
-</motion.div>
-
-
-
-      {/* ✅ Enhanced Premium Products Grid - Mobile 2 Cards Layout */}
+      {/* Premium Products Grid */}
       <motion.div 
         className="container mx-auto px-4 py-16"
         variants={staggerContainer}
@@ -602,32 +710,29 @@ export default function Homes() {
           </p>
         </motion.div>
 
-        {/* ✅ Mobile-First Grid: 2 cards per row on mobile, responsive scaling */}
         <motion.div 
           className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8"
           variants={staggerContainer}
         >
-          {sampleProducts.slice(0, visibleProducts).map((product, index) => (
+          {data.data.slice(0, visibleProducts).map((product, index) => (
             <motion.div
-              key={product.id}
+              key={product._id}
               variants={fadeInUp}
               whileHover={{ y: -10 }}
               data-aos="fade-up"
               data-aos-delay={index * 100}
             >
-              <Link to={`/product/${product.id}`}>
+              <Link to={`/product/${product._id}`}>
                 <div className="group bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100 transform hover:scale-[1.02]">
-                  {/* Product Image */}
                   <div className="relative aspect-square overflow-hidden">
                     <img
-                      src={product.image}
-                      alt={product.name}
+                      src={product.product_image}
+                      alt={product.product_name}
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                     />
                     
-                    {/* Badges and Actions */}
                     <div className="absolute top-2 left-2 right-2 flex justify-between items-start">
-                      {product.category === "Specialty" && (
+                      {product.product_category === "Specialty" && (
                         <motion.div 
                           className="bg-gradient-to-r from-red-500 to-pink-500 text-white text-xs px-2 py-1 rounded-full font-semibold shadow-lg"
                           initial={{ scale: 0 }}
@@ -639,14 +744,14 @@ export default function Homes() {
                       )}
                       <motion.button
                         className={`ml-auto p-1.5 rounded-full ${
-                          favorites.has(product.id) 
+                          favorites.has(product._id) 
                             ? 'bg-red-500 text-white' 
                             : 'bg-white/80 text-gray-600 hover:text-red-500'
                         } backdrop-blur-sm transition-all shadow-md opacity-0 group-hover:opacity-100`}
                         onClick={(e) => {
                           e.preventDefault();
                           e.stopPropagation();
-                          toggleFavorite(product.id);
+                          toggleFavorite(product._id);
                         }}
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
@@ -658,26 +763,24 @@ export default function Homes() {
                     <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   </div>
 
-                  {/* Product Info */}
                   <div className="p-3 sm:p-4 lg:p-6">
                     <div className="flex justify-between items-start mb-2">
                       <h3 className="text-sm sm:text-base lg:text-xl font-bold text-gray-800 line-clamp-2 group-hover:text-amber-700 transition-colors flex-1">
-                        {product.name}
+                        {product.product_name}
                       </h3>
-                      {product.weight && (
+                      {product.product_quantity && (
                         <span className="bg-gradient-to-r from-amber-100 to-orange-100 text-amber-800 text-xs px-2 py-1 rounded-full ml-2 font-semibold flex-shrink-0">
-                          {product.weight}
+                          {product.product_quantity}
                         </span>
                       )}
                     </div>
 
-                    {product.description && (
+                    {product.product_description && (
                       <p className="text-gray-600 text-xs sm:text-sm mb-3 line-clamp-2 leading-relaxed">
-                        {product.description}
+                        {product.product_description}
                       </p>
                     )}
 
-                    {/* ✅ Dynamic Rating - Only shows if product has rating */}
                     <ProductRating 
                       rating={product.rating} 
                       reviewCount={product.reviewCount}
@@ -686,9 +789,9 @@ export default function Homes() {
 
                     <div className="flex items-center justify-between">
                       <div className="flex flex-col">
-                        <span className="text-lg sm:text-xl lg:text-2xl font-bold text-amber-700">₹{product.price}</span>
-                        {product.originalPrice && (
-                          <span className="text-gray-400 text-xs sm:text-sm line-through">₹{product.originalPrice}</span>
+                        <span className="text-lg sm:text-xl lg:text-2xl font-bold text-amber-700">₹{product.product_price}</span>
+                        {product.product_price && (
+                          <span className="text-gray-400 text-xs sm:text-sm line-through">₹{Math.floor(product.product_price * 1.5)}</span>
                         )}
                       </div>
                       <motion.button
@@ -712,8 +815,8 @@ export default function Homes() {
           ))}
         </motion.div>
 
-        {/* Enhanced Load More Button */}
-        {visibleProducts < sampleProducts.length && (
+        {/* Load More Button */}
+        {visibleProducts < data.data.length && (
           <motion.div 
             className="text-center mt-12"
             initial={{ opacity: 0 }}
@@ -735,135 +838,126 @@ export default function Homes() {
         )}
       </motion.div>
 
-      {/* Enhanced Footer */}
-      <motion.footer 
-        className="bg-gradient-to-r from-amber-900 via-orange-900 to-red-900 text-white pt-16 pb-8"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 1 }}
-      >
-        <div className="container mx-auto px-4">
-          <motion.div 
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12"
-            variants={staggerContainer}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-          >
-            {/* Enhanced Brand Info */}
-            <motion.div className="lg:col-span-2" variants={fadeInUp}>
-              <motion.h2 
-                className="text-4xl font-bold font-serif mb-6 bg-gradient-to-r from-yellow-300 to-orange-300 bg-clip-text text-transparent"
-                whileHover={{ scale: 1.05 }}
+      {/* Footer */}
+   <motion.footer 
+  className="bg-gradient-to-r from-amber-900 via-orange-900 to-red-900 text-white pt-16 pb-8"
+  initial={{ opacity: 0 }}
+  whileInView={{ opacity: 1 }}
+  viewport={{ once: true }}
+  transition={{ duration: 1 }}
+>
+  <div className="container mx-auto px-4">
+    <motion.div 
+      className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12"
+      variants={staggerContainer}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true }}
+    >
+      {/* Logo + Instagram Icon */}
+      <motion.div className="lg:col-span-1" variants={fadeInUp}>
+        <motion.h2 
+          className="text-4xl font-bold font-serif mb-6 bg-gradient-to-r from-yellow-300 to-orange-300 bg-clip-text text-transparent"
+          whileHover={{ scale: 1.05 }}
+        >
+          GharKaAchar
+        </motion.h2>
+        <p className="text-amber-100 mb-6 text-lg leading-relaxed">
+          Authentic Indian pickles and traditional foods crafted with love and generations-old recipes.
+        </p>
+        
+        {/* Only Instagram Icon */}
+        <motion.a
+          href="https://instagram.com/gharkachar" // Apna Instagram username daal dena
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center p-3 rounded-full bg-white/10 backdrop-blur-sm text-white hover:bg-pink-600 transition-all duration-300 hover:scale-110"
+          whileHover={{ scale: 1.2, rotate: 10 }}
+          whileTap={{ scale: 0.9 }}
+        >
+          <InstagramIcon />
+          <span className="ml-3 font-medium">Follow Us</span>
+        </motion.a>
+      </motion.div>
+
+      {/* Backend Categories */}
+      <motion.div variants={fadeInUp}>
+        <h3 className="text-xl font-bold mb-6 text-yellow-300">Our Categories</h3>
+        <ul className="space-y-4">
+          {/* ✅ Backend categories data use kar raha hai */}
+          {(categories?.data?.length > 0 ? categories.data : data.data.slice(0, 8).map((item, index) => ({
+            _id: item._id || index,
+            category_name: item.product_category || item.category || `Category ${index + 1}`
+          }))).map((category) => (
+            <motion.li key={category._id}>
+              <Link
+                to={`/category/${category.category_name || category.product_category || category.category}`}
+                className="text-amber-100 hover:text-white transition-colors flex items-center group"
+                whileHover={{ x: 8 }}
               >
-                GharKaAchar
-              </motion.h2>
-              <p className="text-amber-100 mb-6 text-lg leading-relaxed">
-                Authentic Indian pickles and traditional foods crafted with love and generations-old recipes. 
-                Experience the taste of home, delivered fresh to your doorstep.
-              </p>
-              <div className="flex space-x-6">
-                {[
-                  { icon: 'facebook', color: 'hover:bg-blue-600' },
-                  { icon: 'instagram', color: 'hover:bg-pink-600' },
-                  { icon: 'twitter', color: 'hover:bg-blue-400' }
-                ].map((social, index) => (
-                  <motion.a
-                    key={social.icon}
-                    href="#"
-                    className={`p-3 rounded-full bg-white/10 backdrop-blur-sm text-white ${social.color} transition-all duration-300 hover:scale-110`}
-                    whileHover={{ scale: 1.2, rotate: 10 }}
-                    whileTap={{ scale: 0.9 }}
-                  >
-                    <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                      <path fillRule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clipRule="evenodd" />
-                    </svg>
-                  </motion.a>
-                ))}
-              </div>
-            </motion.div>
+                <svg className="w-4 h-4 mr-2 opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+                {category.category_name || category.product_category || category.category}
+              </Link>
+            </motion.li>
+          ))}
+        </ul>
+      </motion.div>
 
-            {/* Enhanced Quick Links */}
-            <motion.div variants={fadeInUp}>
-              <h3 className="text-xl font-bold mb-6 text-yellow-300">Quick Links</h3>
-              <ul className="space-y-4">
-                {['Home', 'Shop', 'About Us', 'Contact', 'FAQ'].map((link) => (
-                  <motion.li key={link}>
-                    <motion.a
-                      href="#"
-                      className="text-amber-100 hover:text-white transition-colors flex items-center group"
-                      whileHover={{ x: 8 }}
-                    >
-                      <svg className="w-4 h-4 mr-2 opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                      </svg>
-                      {link}
-                    </motion.a>
-                  </motion.li>
-                ))}
-              </ul>
-            </motion.div>
+      {/* Quick Links (Optional - ya isko bhi hata sakte ho) */}
+      <motion.div variants={fadeInUp}>
+        <h3 className="text-xl font-bold mb-6 text-yellow-300">Quick Links</h3>
+        <ul className="space-y-4">
+          {['Home', 'About Us', 'Contact', 'Privacy Policy'].map((link) => (
+            <motion.li key={link}>
+              <motion.a
+                href="#"
+                className="text-amber-100 hover:text-white transition-colors flex items-center group"
+                whileHover={{ x: 8 }}
+              >
+                <svg className="w-4 h-4 mr-2 opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+                {link}
+              </motion.a>
+            </motion.li>
+          ))}
+        </ul>
+      </motion.div>
+    </motion.div>
 
-            {/* Enhanced Categories */}
-            <motion.div variants={fadeInUp}>
-              <h3 className="text-xl font-bold mb-6 text-yellow-300">Categories</h3>
-              <ul className="space-y-4">
-                {['Pickles', 'Chutneys', 'Papads', 'Desserts', 'Specialty Items'].map((category) => (
-                  <motion.li key={category}>
-                    <motion.a
-                      href="#"
-                      className="text-amber-100 hover:text-white transition-colors flex items-center group"
-                      whileHover={{ x: 8 }}
-                    >
-                      <svg className="w-4 h-4 mr-2 opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                      </svg>
-                      {category}
-                    </motion.a>
-                  </motion.li>
-                ))}
-              </ul>
-            </motion.div>
-          </motion.div>
+    {/* Copyright Section */}
+    <motion.div 
+      className="border-t border-white/20 my-12"
+      initial={{ scaleX: 0 }}
+      whileInView={{ scaleX: 1 }}
+      viewport={{ once: true }}
+      transition={{ duration: 1.5 }}
+    />
 
-          {/* Enhanced Divider */}
-          <motion.div 
-            className="border-t border-white/20 my-12"
-            initial={{ scaleX: 0 }}
-            whileInView={{ scaleX: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1.5 }}
-          />
-
-          {/* Enhanced Copyright */}
-          <motion.div 
-            className="text-center"
-            variants={fadeInUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-          >
-            <p className="text-amber-200 text-lg mb-4">
-              &copy; {new Date().getFullYear()} GharKaAchar. All rights reserved. Made with ❤️ in India
-            </p>
-            <div className="flex flex-wrap justify-center space-x-8">
-              {['Privacy Policy', 'Terms of Service', 'Shipping Policy', 'Return Policy'].map((policy) => (
-                <motion.a
-                  key={policy}
-                  href="#"
-                  className="text-amber-300 hover:text-white transition-colors text-sm"
-                  whileHover={{ y: -2, scale: 1.05 }}
-                >
-                  {policy}
-                </motion.a>
-              ))}
-            </div>
-          </motion.div>
-        </div>
-      </motion.footer>
+    <motion.div 
+      className="text-center"
+      variants={fadeInUp}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true }}
+    >
+      <p className="text-amber-200 text-lg">
+        &copy; {new Date().getFullYear()} GharKaAchar. All rights reserved. Made with ❤️ in India
+      </p>
+    </motion.div>
+  </div>
+</motion.footer>
 
       <style>{`
+        @keyframes shimmer {
+          0% { transform: translateX(-100%) skewX(-12deg); }
+          100% { transform: translateX(200%) skewX(-12deg); }
+        }
+        .animate-shimmer {
+          animation: shimmer 1.5s infinite;
+        }
         .hide-scrollbar {
           -ms-overflow-style: none;
           scrollbar-width: none;

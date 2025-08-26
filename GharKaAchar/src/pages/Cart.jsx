@@ -33,18 +33,19 @@ const PlusIcon = () => (
 
 const CartPage = () => {
   const dispatch = useDispatch();
-  const cart = useSelector((s) => s.cart.cart);
+  // ✅ FIXED - Safe cart selector with fallback
+  const { cart = [] } = useSelector((s) => s.cart || {});
   const [removingItems, setRemovingItems] = useState(new Set());
 
-  // Map state items to view model
-  const cartItems = cart.map((i) => ({
+  // ✅ FIXED - Safe cart mapping with array check
+  const cartItems = Array.isArray(cart) ? cart.map((i) => ({
     id: i.id,
     name: i.name,
     price: i.price,
     image: i.image,
     weight: i.weight,
     quantity: i.qty || 1,
-  }));
+  })) : [];
 
   const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const shipping = cartItems.length > 0 ? 50 : 0;

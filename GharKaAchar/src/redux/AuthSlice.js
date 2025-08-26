@@ -147,6 +147,7 @@ const AuthSlice = createSlice({
         state.loading = false;
         state.user = null;
         state.isAuthenticated = false;
+        state.error = action.payload;
       });
   }
 });

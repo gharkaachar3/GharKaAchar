@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import Fuse from "fuse.js";
 import { motion, AnimatePresence } from "framer-motion";
 
-// Icons
+// Icons (same)
 const UserIcon = () => (
   <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
@@ -59,19 +59,21 @@ const CleanHeader = ({ cartCount = 0 }) => {
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
 
-  // Get data from Redux store
-  const { products = [] } = useSelector((s) => s.getdata || {});
+  // ✅ FIXED - Safe Redux selectors with fallbacks
+  const { data = {} } = useSelector((s) => s.getdata || {});
+  const products = data?.data || []; // Backend data from data.data
   const { cart = [] } = useSelector((s) => s.cart || {});
 
-  const finalCartCount = cartCount || cart.reduce((sum, i) => sum + (i.qty || 1), 0);
+  // ✅ FIXED - Safe cart count calculation
+  const finalCartCount = cartCount || (Array.isArray(cart) ? cart.reduce((sum, i) => sum + (i.qty || 1), 0) : 0);
 
-  // Fuse.js setup
+  // Fuse.js setup - Fixed to use backend data structure
   const fuse = React.useMemo(() => {
     return new Fuse(products, {
       keys: [
-        { name: "name", weight: 0.7 },
-        { name: "category", weight: 0.2 },
-        { name: "description", weight: 0.1 }
+        { name: "product_name", weight: 0.7 },
+        { name: "product_category", weight: 0.2 },
+        { name: "product_description", weight: 0.1 }
       ],
       threshold: 0.4,
       distance: 100,
@@ -244,14 +246,13 @@ const CleanHeader = ({ cartCount = 0 }) => {
               <div className="hidden sm:block">
                 <span className={`font-bold font-serif text-xl lg:text-2xl tracking-tight select-none transition-all duration-300 group-hover:scale-105 ${
                   isScrolled 
-                    ? "text-amber-800 drop-shadow-sm" // ✅ Fixed: Solid color instead of gradient
+                    ? "text-amber-800 drop-shadow-sm"
                     : "text-white drop-shadow-sm"
                 }`}>
                   <span className="relative">
                     Ghar
                     <span className={`${isScrolled ? 'text-amber-600' : 'text-amber-200'} font-extrabold`}>Ka</span>
                     Achar
-                    {/* Decorative underline */}
                     <div className={`absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r transition-all duration-300 group-hover:w-full ${
                       isScrolled 
                         ? 'from-amber-500 to-amber-700 w-0' 
@@ -265,7 +266,7 @@ const CleanHeader = ({ cartCount = 0 }) => {
               <div className="block sm:hidden">
                 <span className={`font-bold font-serif text-base tracking-tight select-none transition-all duration-300 ${
                   isScrolled 
-                    ? "text-amber-800 drop-shadow-sm" // ✅ Fixed: Solid color instead of gradient
+                    ? "text-amber-800 drop-shadow-sm"
                     : "text-white drop-shadow-sm"
                 }`}>
                   <span className="block leading-tight">
@@ -323,27 +324,27 @@ const CleanHeader = ({ cartCount = 0 }) => {
                       }`}
                     >
                       <div className="flex items-center">
-                        {item.image && (
+                        {item.product_image && (
                           <img 
-                            src={item.image} 
-                            alt={item.name} 
+                            src={item.product_image} 
+                            alt={item.product_name} 
                             className="h-10 w-10 rounded-lg mr-3 border border-amber-100 object-cover flex-shrink-0" 
                             loading="lazy"
                           />
                         )}
                         <div className="flex-1 min-w-0">
                           <div className="font-semibold text-gray-900 truncate">
-                            {item.name}
+                            {item.product_name}
                           </div>
                           <div className="flex items-center gap-2 mt-1">
-                            {item.category && (
+                            {item.product_category && (
                               <span className="text-xs text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full">
-                                {item.category}
+                                {item.product_category}
                               </span>
                             )}
-                            {item.price && (
+                            {item.product_price && (
                               <span className="text-sm font-medium text-green-600">
-                                ₹{item.price}
+                                ₹{item.product_price}
                               </span>
                             )}
                           </div>
@@ -509,27 +510,27 @@ const CleanHeader = ({ cartCount = 0 }) => {
                       }`}
                     >
                       <div className="flex items-center gap-4">
-                        {item.image && (
+                        {item.product_image && (
                           <img 
-                            src={item.image} 
-                            alt={item.name} 
+                            src={item.product_image} 
+                            alt={item.product_name} 
                             className="h-12 w-12 rounded-lg border border-gray-200 object-cover flex-shrink-0" 
                             loading="lazy"
                           />
                         )}
                         <div className="flex-1 min-w-0">
                           <div className="font-semibold text-gray-900 text-base mb-1">
-                            {item.name}
+                            {item.product_name}
                           </div>
                           <div className="flex items-center gap-2 flex-wrap">
-                            {item.category && (
+                            {item.product_category && (
                               <span className="text-xs text-amber-600 bg-amber-50 px-2 py-1 rounded-full">
-                                {item.category}
+                                {item.product_category}
                               </span>
                             )}
-                            {item.price && (
+                            {item.product_price && (
                               <span className="text-sm font-medium text-green-600">
-                                ₹{item.price}
+                                ₹{item.product_price}
                               </span>
                             )}
                           </div>

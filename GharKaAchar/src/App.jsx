@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { BrowserRouter, Routes, Route, Link, Navigate } from "react-router"; // ✅ FIXED
+import { BrowserRouter, Routes, Route, Link, Navigate } from "react-router"; 
 import { useDispatch, useSelector } from "react-redux";
 
 import Homes from "./pages/Homes";
 import ProductPage from "./pages/PDP";
 import CartPage from "./pages/Cart";
-import CategoriesPage from "./pages/Categories";
+// import CategoriesPage from "./pages/Categories";
 import AuthPage from "./pages/Auth";
 import Profile from "./pages/Profile";
 import Admin from "./pages/Admin";
@@ -17,6 +17,7 @@ import AddBanner from "./pages/Addbanner";
 import DeleteBanner from "./pages/dltBanner";
 import AddAdmin from "./pages/AddAdmin";
 import RemoveAdmins from "./pages/removeAdmin";
+import CategoriesPage from "./pages/Categories";
 
 import { check } from "./redux/AuthSlice";
 import { setCartFromBackend } from "./redux/CartSlice";
@@ -70,7 +71,7 @@ function App() {
         <Route path="/" element={<Homes />} />
         <Route path="/product/:id" element={<ProductPage />} />
         <Route path="/cart" element={<CartPage />} />
-        <Route path="/categories" element={<CategoriesPage />} />
+        <Route path={`category/:categoryName` }element={<CategoriesPage />} />
 
         {/* Auth Routes */}
         <Route

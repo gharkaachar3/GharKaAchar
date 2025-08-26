@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const image1 = new URL("../assets/download.jpeg", import.meta.url).href;
 
-// Enhanced Icons
+// Enhanced Icons (same as before)
 const BackIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -82,23 +82,33 @@ const Toast = ({ message, type = 'success', onClose }) => (
 );
 
 export default function Profile() {
-  const { user } = useSelector((state) => state.auth?.user || null);
+  // ✅ FIXED: Correct Redux state destructuring
+  const { user, isAuthenticated } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [toast, setToast] = useState(null);
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
+
+  // ✅ Debug logs (remove in production)
+  console.log('Auth State:', { user, isAuthenticated });
+  console.log('User Details:', user);
 
   const showToast = (message, type = 'success') => {
     setToast({ message, type });
     setTimeout(() => setToast(null), 3000);
   };
 
-  const handleLogout = () => {
-    dispatch(logout());
-    showToast('Logged out successfully!', 'success');
-    setTimeout(() => {
-      navigate("/login");
-    }, 1000);
+  const handleLogout = async () => {
+    try {
+      await dispatch(logout()).unwrap();
+      showToast('Logged out successfully!', 'success');
+      setTimeout(() => {
+        navigate("/login");
+      }, 1000);
+    } catch (error) {
+      console.error('Logout error:', error);
+      showToast('Error logging out', 'error');
+    }
   };
 
   const confirmLogout = () => {
@@ -108,7 +118,8 @@ export default function Profile() {
 
   const goHome = () => navigate("/");
 
-  if (!user) {
+  // ✅ Check both authentication and user existence
+  if (!isAuthenticated || !user) {
     return (
       <motion.div 
         className="min-h-screen flex items-center justify-center bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 px-4"
@@ -148,7 +159,8 @@ export default function Profile() {
     );
   }
 
-  const isAdmin = String(user.role || "").toLowerCase() === "admin";
+  // ✅ Better role checking - handle multiple possible user data structures
+  const isAdmin = String(user?.role || user?.user?.role || "").toLowerCase() === "admin";
 
   return (
     <motion.div 
@@ -187,7 +199,7 @@ export default function Profile() {
         </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* ✅ Profile Card - Removed Member Since */}
+          {/* ✅ Profile Card with Better Data Handling */}
           <motion.div 
             className="lg:col-span-1"
             initial={{ opacity: 0, x: -30 }}
@@ -210,7 +222,7 @@ export default function Profile() {
                   whileHover={{ scale: 1.05 }}
                 >
                   <img
-                    src={image1}
+                    src={user?.profileImage || user?.user?.profileImage || image1}
                     alt="User Avatar"
                     className="w-28 h-28 rounded-full border-4 border-white/50 object-cover mx-auto shadow-lg"
                   />
@@ -219,19 +231,43 @@ export default function Profile() {
                   </button>
                 </motion.div>
                 
-                <h2 className="text-2xl font-bold mb-2">{user.name || "User"}</h2>
-                <p className="text-amber-100 text-sm">{user.email || "No email provided"}</p>
+                {/* ✅ Handle different user data structures */}
+                <h2 className="text-2xl font-bold mb-2">
+                  {user?.name || user?.user?.name || user?.firstName || "User"}
+                </h2>
+                <p className="text-amber-100 text-sm">
+                  {user?.email || user?.user?.email || "No email provided"}
+                </p>
+                
+                {/* Phone number if available */}
+                {(user?.phone || user?.user?.phone || user?.number) && (
+                  <p className="text-amber-100 text-xs mt-1">
+                    📱 {user?.phone || user?.user?.phone || user?.number}
+                  </p>
+                )}
               </div>
 
-              {/* ✅ User Details - Only Status and Role */}
+              {/* ✅ User Details */}
               <div className="p-6">
                 <div className="space-y-4">
                   <div className="flex justify-between items-center py-3 border-b border-gray-100">
                     <span className="text-gray-600">Status</span>
                     <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-semibold">
-                      Active
+                      {user?.isActive !== false ? 'Active' : 'Inactive'}
                     </span>
                   </div>
+                  
+                  <div className="flex justify-between items-center py-3 border-b border-gray-100">
+                    <span className="text-gray-600">Phone Verified</span>
+                    <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                      user?.isPhoneVerified || user?.user?.isPhoneVerified
+                        ? 'bg-green-100 text-green-700' 
+                        : 'bg-yellow-100 text-yellow-700'
+                    }`}>
+                      {user?.isPhoneVerified || user?.user?.isPhoneVerified ? '✓ Verified' : '⚠ Not Verified'}
+                    </span>
+                  </div>
+                  
                   <div className="flex justify-between items-center py-3">
                     <span className="text-gray-600">Role</span>
                     <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
@@ -242,12 +278,20 @@ export default function Profile() {
                       {isAdmin ? 'Administrator' : 'Customer'}
                     </span>
                   </div>
+                  
+                  {/* User ID for debugging (remove in production) */}
+                  {user?.id && (
+                    <div className="flex justify-between items-center py-3 text-xs text-gray-400">
+                      <span>User ID</span>
+                      <span>#{user.id}</span>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
           </motion.div>
 
-          {/* ✅ Actions Panel */}
+          {/* ✅ Actions Panel - Same as before */}
           <motion.div 
             className="lg:col-span-2"
             initial={{ opacity: 0, x: 30 }}
@@ -350,7 +394,7 @@ export default function Profile() {
         </div>
       </div>
 
-      {/* ✅ Logout Confirmation Modal */}
+      {/* ✅ Logout Confirmation Modal - Same as before */}
       <AnimatePresence>
         {showLogoutConfirm && (
           <motion.div
