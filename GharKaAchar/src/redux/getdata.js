@@ -57,6 +57,20 @@ export const GetAlladmins = createAsyncThunk(
   }
 );
 
+export const getAllOrder = createAsyncThunk(
+  "getdata/getallorders",
+  async (_, { rejectWithValue }) => {
+    try {
+      const res = await axiosClient.get("/getdata/allorders");
+      return res.data;
+    } catch (e) {
+      return rejectWithValue(
+        e?.response?.data?.message || e?.message || "Failed to fetch admins"
+      );
+    }
+  }
+);
+
 // New function that calls all GET functions
 export const fetchAllData = createAsyncThunk(
   "getdata/fetchAllData",
@@ -102,6 +116,7 @@ const GetDataSlice = createSlice({
     admins: [],
     loading: false,
     error: null,
+    orders:[],
     fetchAllStatus: null // Track the status of fetchAllData
   },
   reducers: {
@@ -185,6 +200,21 @@ const GetDataSlice = createSlice({
         state.fetchAllStatus = "success";
       })
       .addCase(fetchAllData.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Failed to fetch all data";
+        state.fetchAllStatus = "failed";
+      })
+      // get all orders
+        .addCase(getAllOrder.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+        state.fetchAllStatus = "loading";
+      })
+      .addCase(getAllOrder.fulfilled, (state, action) => {
+        state.loading = false;
+        state.orders = action.payload;
+      })
+      .addCase(getAllOrder.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || "Failed to fetch all data";
         state.fetchAllStatus = "failed";

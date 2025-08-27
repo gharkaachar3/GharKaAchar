@@ -13,12 +13,13 @@ Auth.post('/resetpassword',userMiddleware,resetPassword);
 
 Auth.get('/check',userMiddleware,async (req,res)=>{
     const cart = await Cart.findOne({userid:req.user._id});
-
+    console.log(req.user)
     const reply = {
         name: req.user.name,
         email: req.user.email,
         _id:req.user._id,
         role:req.user.role,
+        number:req.user.number,
         cart:cart.cart.length === 0 || !cart ?[] : cart.cart
     }
     res.status(200).json({

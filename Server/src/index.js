@@ -8,6 +8,8 @@ const Auth = require("./Routes/AuthRoutes");
 const CartRouter = require("./Routes/CartRoutes");
 const AdminRoutes = require("./Routes/AdminRoutes");
 const getdata = require("./Routes/getDataRoutes")
+const NumberVerification = require("./Routes/numberVerifictionRoutes");
+const Orderrouter = require('./Routes/orderRoutes')
 
 app.use(express.json());
 app.use(cookieParser());
@@ -30,6 +32,8 @@ app.use('/user', Auth);
 app.use('/cart', CartRouter);
 app.use('/admin',AdminRoutes);
 app.use('/getdata',getdata);
+app.use('/otp',NumberVerification);
+app.use('/cashfree',Orderrouter);
 
 // Start server
 async function connection() {

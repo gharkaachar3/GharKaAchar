@@ -1,5 +1,5 @@
-const Order = require('../models/Order');
-const User = require('../models/User');
+const Order = require('../Model/order');
+const User = require('../Model/User');
 const axios = require('axios');
 const crypto = require('crypto');
 

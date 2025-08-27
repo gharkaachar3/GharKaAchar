@@ -234,7 +234,7 @@ async function sendOtp(req, res) {
 
 async function verifyOtp(req, res) {
   const { countryCode, mobileNumber, verificationId, code } = req.body;
-  const userId = req.user.id;
+  const userId = req.user._id;
   
   if (!countryCode || !mobileNumber || !verificationId || !code) {
     return res.status(400).json({ 
@@ -263,18 +263,19 @@ async function verifyOtp(req, res) {
     
     const data = response.data.data;
     
-    if (data.verificationStatus === 'VERIFICATION_COMPLETED' && !data.errorMessage) {
-      // Update user's phone number with proper formatting
+    if (!data.errorMessage) {
+      // Update user's phone number - FIXED TO MATCH SCHEMA
       const user = await User.findById(userId);
       if (user) {
         const cleanMobileNumber = mobileNumber.replace(/\D/g, '');
-        user.number = `+${countryCode} ${cleanMobileNumber}`; // Format as +91 8590863462
+        // Schema expects exactly 10 digits in 'number' field
+        user.number = cleanMobileNumber; // Just 10 digits: 8446836890
         await user.save();
         
         console.log('✅ Phone verified and saved:', {
           userId,
-          phoneNo: user.phoneNo,
-          isPhoneVerified: user.isPhoneVerified
+          number: user.number, // Fixed field name
+          userEmail: user.email
         });
       }
       

@@ -5,6 +5,7 @@ import { updateQty, removeFromCart } from '../redux/CartSlice';
 import { CartIcon } from './Homes';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Toaster, toast } from 'sonner';
+import Checkout from '../components/PlaceOrderComponent';
 
 // Simple Icons
 const TrashIcon = () => (
@@ -31,13 +32,19 @@ const PlusIcon = () => (
   </svg>
 );
 
+const CloseIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+  </svg>
+);
+
 const CartPage = () => {
   const dispatch = useDispatch();
-  // ✅ FIXED - Safe cart selector with fallback
   const { cart = [] } = useSelector((s) => s.cart || {});
   const [removingItems, setRemovingItems] = useState(new Set());
+  // ✅ Added state for checkout modal
+  const [showCheckoutModal, setShowCheckoutModal] = useState(false);
 
-  // ✅ FIXED - Safe cart mapping with array check
   const cartItems = Array.isArray(cart) ? cart.map((i) => ({
     id: i.id,
     name: i.name,
@@ -83,6 +90,29 @@ const CartPage = () => {
       });
       showToast('Item removed from cart', 'success');
     }, 300);
+  };
+
+  // ✅ Handle Checkout Button Click
+  const onCheckoutClick = () => {
+    if (cartItems.length > 0) {
+      setShowCheckoutModal(true);
+    } else {
+      showToast('Your cart is empty!', 'error');
+    }
+  };
+
+  // ✅ Close checkout modal
+  const onCloseCheckout = () => {
+    setShowCheckoutModal(false);
+  };
+
+  // ✅ Handle successful order
+  const onOrderSuccess = (order) => {
+    console.log('Order placed successfully:', order);
+    setShowCheckoutModal(false);
+    showToast('Order placed successfully! 🎉', 'success');
+    // Optionally clear cart after successful order
+    // cartItems.forEach(item => dispatch(removeFromCart(item.id)));
   };
 
   // Animation variants
@@ -220,7 +250,7 @@ const CartPage = () => {
                             <div className="text-sm text-gray-500">per piece</div>
                           </div>
 
-                          {/* ✅ Fixed Quantity - Desktop */}
+                          {/* Quantity - Desktop */}
                           <div className="hidden lg:block lg:col-span-2">
                             <div className="flex items-center justify-center">
                               <div className="flex items-center bg-white border border-amber-300 rounded-lg shadow-sm overflow-hidden">
@@ -262,7 +292,7 @@ const CartPage = () => {
                                 <div className="text-xl font-bold text-amber-700">₹{item.price}</div>
                               </div>
 
-                              {/* ✅ Fixed Quantity - Mobile */}
+                              {/* Quantity - Mobile */}
                               <div className="text-center">
                                 <div className="text-sm font-semibold text-gray-600 mb-2">Quantity</div>
                                 <div className="flex items-center justify-center">
@@ -360,8 +390,11 @@ const CartPage = () => {
                       </div>
                     </div>
 
-                    {/* Checkout Button */}
-                    <button className="w-full bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white py-4 px-6 rounded-xl font-bold text-xl transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-3">
+                    {/* ✅ Updated Checkout Button */}
+                    <button 
+                      onClick={onCheckoutClick}
+                      className="w-full bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white py-4 px-6 rounded-xl font-bold text-xl transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-3"
+                    >
                       <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
                       </svg>
@@ -398,6 +431,44 @@ const CartPage = () => {
             </div>
           </motion.div>
         )}
+
+        {/* ✅ Checkout Modal */}
+        <AnimatePresence>
+          {showCheckoutModal && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4 backdrop-blur-sm"
+              onClick={onCloseCheckout}
+            >
+              <motion.div
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.9, opacity: 0 }}
+                className="bg-white rounded-3xl shadow-2xl w-full max-w-6xl max-h-[95vh] overflow-hidden relative"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {/* Close Button */}
+                <button
+                  onClick={onCloseCheckout}
+                  className="absolute top-4 right-4 z-10 p-2 bg-white bg-opacity-90 hover:bg-opacity-100 rounded-full shadow-lg transition-all duration-200 hover:scale-110"
+                  aria-label="Close Checkout"
+                >
+                  <CloseIcon className="text-gray-600 hover:text-gray-900" />
+                </button>
+
+                {/* Checkout Component */}
+                <div className="overflow-y-auto max-h-[95vh]">
+                  <Checkout 
+                    cartItems={cartItems} 
+                    onOrderSuccess={onOrderSuccess}
+                  />
+                </div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </div>
   );

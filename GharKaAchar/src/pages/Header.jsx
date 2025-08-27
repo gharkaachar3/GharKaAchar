@@ -59,6 +59,7 @@ const CleanHeader = ({ cartCount = 0 }) => {
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
 
+
   // ✅ FIXED - Safe Redux selectors with fallbacks
   const { data = {} } = useSelector((s) => s.getdata || {});
   const products = data?.data || []; // Backend data from data.data
@@ -316,6 +317,7 @@ const CleanHeader = ({ cartCount = 0 }) => {
                   className="absolute left-0 right-0 mt-2 bg-white border border-amber-100 rounded-xl shadow-xl overflow-hidden z-[60] max-h-96 overflow-y-auto"
                 >
                   {searchResults.map(({ item }, idx) => (
+                    <Link to={"/product/"+item._id}>
                     <button
                       key={`${item._id || item.id}-${idx}`}
                       onClick={() => handleProductSelect(item)}
@@ -351,6 +353,7 @@ const CleanHeader = ({ cartCount = 0 }) => {
                         </div>
                       </div>
                     </button>
+                    </Link>
                   ))}
                 </motion.div>
               )}

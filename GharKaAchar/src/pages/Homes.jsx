@@ -8,7 +8,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 
-// Icons
+// Icons (same as before)
 const MenuIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
@@ -56,45 +56,32 @@ const InstagramIcon = () => (
     <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
   </svg>
 );
-// ✅ Fast & Smooth Shimmer Components
-const ShimmerBanner = () => (
-  <div className="h-[40vh] md:h-[50vh] w-full bg-gradient-to-r from-amber-100 via-orange-100 to-yellow-100 relative overflow-hidden">
-    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/60 to-transparent animate-shimmer transform -skew-x-12"></div>
-    <div className="absolute bottom-8 left-8 z-20 space-y-3">
-      <div className="w-48 h-6 bg-amber-200/60 rounded-lg animate-pulse"></div>
-      <div className="w-32 h-4 bg-orange-200/60 rounded-lg animate-pulse"></div>
-      <div className="w-28 h-8 bg-yellow-200/60 rounded-full animate-pulse"></div>
-    </div>
-  </div>
-);
 
-const ShimmerCategory = () => (
-  <div className="flex flex-col items-center flex-shrink-0 w-40 sm:w-44 lg:w-48">
-    <div className="h-28 w-28 sm:h-32 sm:w-32 lg:h-36 lg:w-36 rounded-full bg-gradient-to-br from-amber-200 via-orange-200 to-yellow-200 mb-6 relative overflow-hidden border-4 border-amber-300/50">
-      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/70 to-transparent animate-shimmer transform -skew-x-12"></div>
-    </div>
-    <div className="w-24 h-4 bg-amber-200 rounded-lg mb-2 animate-pulse"></div>
-    <div className="w-32 h-3 bg-orange-200 rounded-lg animate-pulse"></div>
-  </div>
-);
-
-const ShimmerProductCard = () => (
-  <div className="bg-white rounded-xl overflow-hidden shadow-lg border border-amber-200/50">
-    <div className="aspect-square bg-gradient-to-br from-amber-100 via-orange-100 to-yellow-100 relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/60 to-transparent animate-shimmer transform -skew-x-12"></div>
-    </div>
-    <div className="p-4">
-      <div className="w-full h-4 bg-amber-200 rounded-lg mb-2 animate-pulse"></div>
-      <div className="w-3/4 h-3 bg-orange-200 rounded-lg mb-3 animate-pulse"></div>
-      <div className="flex gap-1 mb-3">
-        {[...Array(5)].map((_, i) => (
-          <div key={i} className="w-3 h-3 bg-yellow-200 rounded animate-pulse"></div>
-        ))}
-      </div>
-      <div className="flex justify-between items-center">
-        <div className="w-16 h-6 bg-amber-300 rounded-lg animate-pulse"></div>
-        <div className="w-12 h-8 bg-orange-300 rounded-full animate-pulse"></div>
-      </div>
+// Loading Spinner Component
+const LoadingSpinner = () => (
+  <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 flex items-center justify-center">
+    <div className="text-center">
+      <motion.div
+        className="w-16 h-16 border-4 border-amber-300 border-t-amber-600 rounded-full mx-auto mb-4"
+        animate={{ rotate: 360 }}
+        transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+      />
+      <motion.h2 
+        className="text-2xl font-bold text-amber-700 mb-2"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.2 }}
+      >
+        Loading GharKaAchar
+      </motion.h2>
+      <motion.p 
+        className="text-gray-600"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.4 }}
+      >
+        Preparing fresh content for you...
+      </motion.p>
     </div>
   </div>
 );
@@ -218,13 +205,11 @@ export default function Homes() {
       offset: 100,
     });
 
-    // Set people also loved data
     if (data?.data && data.data.length > 0) {
       const shuffled = [...data.data].sort(() => 0.5 - Math.random());
       setPeopleAlsoLoved(shuffled.slice(0, 5));
     }
 
-    // Set local loading timer - REDUCED TO 800ms
     const timer = setTimeout(() => {
       console.log('Local loading timer completed');
       setLocalLoading(false);
@@ -233,7 +218,6 @@ export default function Homes() {
     return () => clearTimeout(timer);
   }, [data]);
 
-  // ✅ KEY FIX: Better loading condition check
   const isLoading = localLoading || loading || !data || (data && (!data.data || data.data.length === 0));
 
   console.log('Loading States:', {
@@ -278,54 +262,9 @@ export default function Homes() {
     window.location.reload();
   };
 
-  // ✅ FIXED: Show shimmer only when actually loading
   if (isLoading && !error) {
-    console.log('Showing shimmer loading state');
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50">
-        <ShimmerBanner />
-        
-        <div className="container mx-auto px-4 py-16">
-          <div className="text-center mb-16">
-            <div className="w-64 h-8 bg-amber-200 rounded-lg mx-auto mb-4 animate-pulse"></div>
-            <div className="w-96 h-4 bg-orange-200 rounded-lg mx-auto animate-pulse"></div>
-          </div>
-          
-          <div className="flex overflow-x-auto gap-6 sm:gap-8 pb-8">
-            {[...Array(6)].map((_, index) => (
-              <ShimmerCategory key={index} />
-            ))}
-          </div>
-        </div>
-
-        <div className="bg-white/50 py-12">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-12">
-              <div className="w-48 h-8 bg-amber-200 rounded-lg mx-auto mb-4 animate-pulse"></div>
-            </div>
-            <div className="flex overflow-x-auto gap-4 sm:gap-6 pb-6">
-              {[...Array(5)].map((_, index) => (
-                <div key={index} className="flex-shrink-0 w-48 sm:w-56">
-                  <ShimmerProductCard />
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        <div className="container mx-auto px-4 py-16">
-          <div className="text-center mb-12">
-            <div className="w-48 h-8 bg-amber-200 rounded-lg mx-auto mb-4 animate-pulse"></div>
-          </div>
-          
-          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
-            {[...Array(8)].map((_, index) => (
-              <ShimmerProductCard key={index} />
-            ))}
-          </div>
-        </div>
-      </div>
-    );
+    console.log('Showing loading state');
+    return <LoadingSpinner />;
   }
 
   // Error State
@@ -411,7 +350,7 @@ export default function Homes() {
     );
   }
 
-  // ✅ SUCCESS STATE - Show actual content
+  // SUCCESS STATE - Show actual content
   console.log('Showing main content with data:', data.data.length, 'products');
   
   return (
@@ -579,7 +518,7 @@ export default function Homes() {
         </div>
       </motion.div>
 
-      {/* People Also Loved Section */}
+      {/* ✅ FIXED: People Also Loved Section */}
       {peopleAlsoLoved.length > 0 && (
         <motion.div 
           className="bg-white/50 backdrop-blur-sm py-12"
@@ -693,7 +632,7 @@ export default function Homes() {
         </motion.div>
       )}
 
-      {/* Premium Products Grid */}
+      {/* ✅ FIXED: Premium Products Grid */}
       <motion.div 
         className="container mx-auto px-4 py-16"
         variants={staggerContainer}
@@ -839,125 +778,127 @@ export default function Homes() {
       </motion.div>
 
       {/* Footer */}
-   <motion.footer 
-  className="bg-gradient-to-r from-amber-900 via-orange-900 to-red-900 text-white pt-16 pb-8"
-  initial={{ opacity: 0 }}
-  whileInView={{ opacity: 1 }}
-  viewport={{ once: true }}
-  transition={{ duration: 1 }}
->
-  <div className="container mx-auto px-4">
-    <motion.div 
-      className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12"
-      variants={staggerContainer}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true }}
-    >
-      {/* Logo + Instagram Icon */}
-      <motion.div className="lg:col-span-1" variants={fadeInUp}>
-        <motion.h2 
-          className="text-4xl font-bold font-serif mb-6 bg-gradient-to-r from-yellow-300 to-orange-300 bg-clip-text text-transparent"
-          whileHover={{ scale: 1.05 }}
-        >
-          GharKaAchar
-        </motion.h2>
-        <p className="text-amber-100 mb-6 text-lg leading-relaxed">
-          Authentic Indian pickles and traditional foods crafted with love and generations-old recipes.
-        </p>
-        
-        {/* Only Instagram Icon */}
-        <motion.a
-          href="https://instagram.com/gharkachar" // Apna Instagram username daal dena
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center p-3 rounded-full bg-white/10 backdrop-blur-sm text-white hover:bg-pink-600 transition-all duration-300 hover:scale-110"
-          whileHover={{ scale: 1.2, rotate: 10 }}
-          whileTap={{ scale: 0.9 }}
-        >
-          <InstagramIcon />
-          <span className="ml-3 font-medium">Follow Us</span>
-        </motion.a>
-      </motion.div>
-
-      {/* Backend Categories */}
-      <motion.div variants={fadeInUp}>
-        <h3 className="text-xl font-bold mb-6 text-yellow-300">Our Categories</h3>
-        <ul className="space-y-4">
-          {/* ✅ Backend categories data use kar raha hai */}
-          {(categories?.data?.length > 0 ? categories.data : data.data.slice(0, 8).map((item, index) => ({
-            _id: item._id || index,
-            category_name: item.product_category || item.category || `Category ${index + 1}`
-          }))).map((category) => (
-            <motion.li key={category._id}>
-              <Link
-                to={`/category/${category.category_name || category.product_category || category.category}`}
-                className="text-amber-100 hover:text-white transition-colors flex items-center group"
-                whileHover={{ x: 8 }}
+      <motion.footer 
+        className="bg-gradient-to-r from-amber-900 via-orange-900 to-red-900 text-white pt-16 pb-8"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 1 }}
+      >
+        <div className="container mx-auto px-4">
+          <motion.div 
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12"
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            {/* Logo + Instagram Icon */}
+            <motion.div className="lg:col-span-1" variants={fadeInUp}>
+              <motion.h2 
+                className="text-4xl font-bold font-serif mb-6 bg-gradient-to-r from-yellow-300 to-orange-300 bg-clip-text text-transparent"
+                whileHover={{ scale: 1.05 }}
               >
-                <svg className="w-4 h-4 mr-2 opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-                {category.category_name || category.product_category || category.category}
-              </Link>
-            </motion.li>
-          ))}
-        </ul>
-      </motion.div>
-
-      {/* Quick Links (Optional - ya isko bhi hata sakte ho) */}
-      <motion.div variants={fadeInUp}>
-        <h3 className="text-xl font-bold mb-6 text-yellow-300">Quick Links</h3>
-        <ul className="space-y-4">
-          {['Home', 'About Us', 'Contact', 'Privacy Policy'].map((link) => (
-            <motion.li key={link}>
+                GharKaAchar
+              </motion.h2>
+              <p className="text-amber-100 mb-6 text-lg leading-relaxed">
+                Authentic Indian pickles and traditional foods crafted with love and generations-old recipes.
+              </p>
+              
+              {/* Only Instagram Icon */}
               <motion.a
-                href="#"
-                className="text-amber-100 hover:text-white transition-colors flex items-center group"
-                whileHover={{ x: 8 }}
+                href="https://instagram.com/gharkachar"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center p-3 rounded-full bg-white/10 backdrop-blur-sm text-white hover:bg-pink-600 transition-all duration-300 hover:scale-110"
+                whileHover={{ scale: 1.2, rotate: 10 }}
+                whileTap={{ scale: 0.9 }}
               >
-                <svg className="w-4 h-4 mr-2 opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-                {link}
+                <InstagramIcon />
+                <span className="ml-3 font-medium">Follow Us</span>
               </motion.a>
-            </motion.li>
-          ))}
-        </ul>
-      </motion.div>
-    </motion.div>
+            </motion.div>
 
-    {/* Copyright Section */}
-    <motion.div 
-      className="border-t border-white/20 my-12"
-      initial={{ scaleX: 0 }}
-      whileInView={{ scaleX: 1 }}
-      viewport={{ once: true }}
-      transition={{ duration: 1.5 }}
-    />
+            {/* Backend Categories */}
+            <motion.div variants={fadeInUp}>
+              <h3 className="text-xl font-bold mb-6 text-yellow-300">Our Categories</h3>
+              <ul className="space-y-4">
+                {(categories?.data?.length > 0 ? categories.data : data.data.slice(0, 8).map((item, index) => ({
+                  _id: item._id || index,
+                  category_name: item.product_category || item.category || `Category ${index + 1}`
+                }))).map((category) => (
+                  <motion.li key={category._id}>
+                    <Link
+                      to={`/category/${category.category_name || category.product_category || category.category}`}
+                      className="text-amber-100 hover:text-white transition-colors flex items-center group"
+                    >
+                      <motion.div
+                        initial={{ x: 0 }}
+                        whileHover={{ x: 8 }}
+                        className="flex items-center"
+                      >
+                        <svg className="w-4 h-4 mr-2 opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
+                        {category.category_name || category.product_category || category.category}
+                      </motion.div>
+                    </Link>
+                  </motion.li>
+                ))}
+              </ul>
+            </motion.div>
 
-    <motion.div 
-      className="text-center"
-      variants={fadeInUp}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true }}
-    >
-      <p className="text-amber-200 text-lg">
-        &copy; {new Date().getFullYear()} GharKaAchar. All rights reserved. Made with ❤️ in India
-      </p>
-    </motion.div>
-  </div>
-</motion.footer>
+            {/* Quick Links */}
+            <motion.div variants={fadeInUp}>
+              <h3 className="text-xl font-bold mb-6 text-yellow-300">Quick Links</h3>
+              <ul className="space-y-4">
+                {['Home', 'About Us', 'Contact', 'Privacy Policy'].map((link) => (
+                  <motion.li key={link}>
+                    <motion.a
+                      href="#"
+                      className="text-amber-100 hover:text-white transition-colors flex items-center group"
+                    >
+                      <motion.div
+                        initial={{ x: 0 }}
+                        whileHover={{ x: 8 }}
+                        className="flex items-center"
+                      >
+                        <svg className="w-4 h-4 mr-2 opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
+                        {link}
+                      </motion.div>
+                    </motion.a>
+                  </motion.li>
+                ))}
+              </ul>
+            </motion.div>
+          </motion.div>
+
+          {/* Copyright Section */}
+          <motion.div 
+            className="border-t border-white/20 my-12"
+            initial={{ scaleX: 0 }}
+            whileInView={{ scaleX: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1.5 }}
+          />
+
+          <motion.div 
+            className="text-center"
+            variants={fadeInUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            <p className="text-amber-200 text-lg">
+              &copy; {new Date().getFullYear()} GharKaAchar. All rights reserved. Made with ❤️ in India
+            </p>
+          </motion.div>
+        </div>
+      </motion.footer>
 
       <style>{`
-        @keyframes shimmer {
-          0% { transform: translateX(-100%) skewX(-12deg); }
-          100% { transform: translateX(200%) skewX(-12deg); }
-        }
-        .animate-shimmer {
-          animation: shimmer 1.5s infinite;
-        }
         .hide-scrollbar {
           -ms-overflow-style: none;
           scrollbar-width: none;

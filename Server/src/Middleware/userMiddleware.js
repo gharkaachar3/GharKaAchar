@@ -11,7 +11,7 @@ const COOKIE_BASE = {
 const userMiddleware = async (req, res, next) => {
   try {
     const { token, refresh } = req.cookies;
-
+     console.log(token)
     if (!token && !refresh) throw new Error('token does not exist');
 
     const ACCESS_SECRET = process.env.JWT_ACCESS_KEY;

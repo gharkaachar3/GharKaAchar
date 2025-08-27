@@ -22,7 +22,8 @@ const userSchema = new Schema({
     },
     number: {
         type: String,
-        match: [/^\d{10}$/, "Number must be 10 digits"]
+        match: [/^\d{10}$/, "Number must be 10 digits"],
+        default:null
     },
     role: {
         type: String,

@@ -1,155 +1,213 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axiosClient from "../utils/axiosClient";
-import { setCartFromBackend } from "./CartSlice";
+import { setCartFromBackend, clearCart } from "./CartSlice";
 
-// Register
+// ✅ Register
 export const register = createAsyncThunk(
-  "user/register",
-  async (credentials, { rejectWithValue }) => {
+  "auth/register",
+  async (credentials, { rejectWithValue, dispatch }) => {
     try {
       const response = await axiosClient.post("/user/register", credentials);
+      
+      // Auto sync cart after registration
+      if (response.data?.user?.cart) {
+        dispatch(setCartFromBackend(response.data.user.cart));
+      }
+      
       return response.data;
     } catch (err) {
-      return rejectWithValue(err.response?.data || "Registration failed");
+      return rejectWithValue(
+        err.response?.data?.message || 
+        err.response?.data || 
+        "Registration failed"
+      );
     }
   }
 );
 
-// Login
+// ✅ Login
 export const login = createAsyncThunk(
-  "user/login",
+  "auth/login",
   async (credentials, { rejectWithValue, dispatch }) => {
     try {
       const response = await axiosClient.post("/user/login", credentials);
 
-      // Backend cart sync after login
+      // Sync backend cart after successful login
       if (response.data?.user?.cart) {
         dispatch(setCartFromBackend(response.data.user.cart));
       }
 
       return response.data;
     } catch (err) {
-      return rejectWithValue(err.response?.data || "Login failed");
+      return rejectWithValue(
+        err.response?.data?.message || 
+        err.response?.data || 
+        "Login failed"
+      );
     }
   }
 );
 
-// Logout
+// ✅ Logout
 export const logout = createAsyncThunk(
-  "user/logout",
-  async (_, { rejectWithValue }) => {
+  "auth/logout",
+  async (_, { rejectWithValue, dispatch }) => {
     try {
       await axiosClient.post("/user/logout");
+      
+      // Clear cart on logout
+      dispatch(clearCart());
+      
       return null;
     } catch (err) {
-      return rejectWithValue(err.response?.data || "Logout failed");
+      // Even if logout API fails, clear local state
+      dispatch(clearCart());
+      return null;
     }
   }
 );
 
-// Check Auth
+// ✅ Check Authentication Status
 export const check = createAsyncThunk(
-  "user/check",
+  "auth/check",
   async (_, { rejectWithValue, dispatch }) => {
     try {
       const response = await axiosClient.get("/user/check");
 
-      // Backend cart sync on session restore
+      // Sync backend cart on session restore
       if (response.data?.user?.cart) {
         dispatch(setCartFromBackend(response.data.user.cart));
       }
 
       return response.data;
     } catch (err) {
-      return rejectWithValue(err.response?.data || "Check failed");
+      // Clear cart if session is invalid
+      dispatch(clearCart());
+      return rejectWithValue(
+        err.response?.data?.message || 
+        err.response?.data || 
+        "Session expired"
+      );
     }
   }
 );
 
-// Slice
+// ✅ Auth Slice with Fixed Loading States
 const AuthSlice = createSlice({
   name: "auth",
   initialState: {
     user: null,
-    loading: false,
+    loading: false, // ✅ Start with false
     isAuthenticated: false,
-    error: null
+    error: null,
+    redirectPath: null
   },
-  reducers: {},
+  reducers: {
+    // ✅ Clear errors manually
+    clearError: (state) => {
+      state.error = null;
+    },
+    // ✅ Set redirect path for post-login navigation
+    setRedirectPath: (state, action) => {
+      state.redirectPath = action.payload;
+    },
+    // ✅ Clear redirect path
+    clearRedirectPath: (state) => {
+      state.redirectPath = null;
+    },
+    // ✅ Manual logout (for expired tokens, etc.)
+    forceLogout: (state) => {
+      state.user = null;
+      state.isAuthenticated = false;
+      state.loading = false;
+      state.error = null;
+      state.redirectPath = null;
+    }
+  },
   extraReducers: (builder) => {
     builder
-      // Register
+      // ✅ Register Cases
       .addCase(register.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
       .addCase(register.fulfilled, (state, action) => {
-        state.loading = false;
+        state.loading = false; // ✅ Essential
         state.user = action.payload;
         state.isAuthenticated = true;
         state.error = null;
       })
       .addCase(register.rejected, (state, action) => {
-        state.loading = false;
+        state.loading = false; // ✅ Critical fix
         state.user = null;
         state.isAuthenticated = false;
         state.error = action.payload;
       })
 
-      // Login
+      // ✅ Login Cases
       .addCase(login.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
       .addCase(login.fulfilled, (state, action) => {
-        state.loading = false;
+        state.loading = false; // ✅ Essential
         state.user = action.payload;
         state.isAuthenticated = true;
         state.error = null;
       })
       .addCase(login.rejected, (state, action) => {
-        state.loading = false;
+        state.loading = false; // ✅ Critical fix
         state.user = null;
         state.isAuthenticated = false;
         state.error = action.payload;
       })
 
-      // Logout
+      // ✅ Logout Cases
       .addCase(logout.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
       .addCase(logout.fulfilled, (state) => {
-        state.loading = false;
+        state.loading = false; // ✅ Essential
         state.user = null;
         state.isAuthenticated = false;
         state.error = null;
+        state.redirectPath = null;
       })
-      .addCase(logout.rejected, (state, action) => {
-        state.loading = false;
+      .addCase(logout.rejected, (state) => {
+        state.loading = false; // ✅ Critical fix
         state.user = null;
         state.isAuthenticated = false;
-        state.error = action.payload;
+        state.error = null;
+        state.redirectPath = null;
       })
 
-      // Check
+      // ✅ Check Cases - MOST IMPORTANT
       .addCase(check.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
       .addCase(check.fulfilled, (state, action) => {
-        state.loading = false;
+        state.loading = false; // ✅ Essential
         state.user = action.payload;
         state.isAuthenticated = true;
         state.error = null;
       })
       .addCase(check.rejected, (state, action) => {
-        state.loading = false;
+        state.loading = false; // ✅ MOST CRITICAL FIX
         state.user = null;
         state.isAuthenticated = false;
         state.error = action.payload;
       });
   }
 });
+
+// ✅ Export actions
+export const { 
+  clearError, 
+  setRedirectPath, 
+  clearRedirectPath, 
+  forceLogout 
+} = AuthSlice.actions;
 
 export default AuthSlice.reducer;
