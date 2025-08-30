@@ -7,7 +7,7 @@ const getdata = express.Router();
 getdata.get("/allproducts",getAllProducts);
 getdata.get("/allcategories",getAllcategories);
 getdata.get("/allbanner",getAllbanners);
-getdata.get("/alladmins",adminMiddleware,getAllUsers);
+getdata.get("/alladmins",userMiddleware,getAllUsers);
 getdata.get("/allorders",userMiddleware,getAllOrder);
 
 
