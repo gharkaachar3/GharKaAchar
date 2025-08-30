@@ -17,11 +17,18 @@ import DeleteBanner from "./pages/dltBanner";
 import AddAdmin from "./pages/AddAdmin";
 import RemoveAdmins from "./pages/removeAdmin";
 import CategoriesPage from "./pages/Categories";
-
 import { check } from "./redux/AuthSlice";
 import { setCartFromBackend } from "./redux/CartSlice";
 import { fetchAllData } from "./redux/getdata";
 import CleanHeader from "./pages/Header";
+import PaymentCallback from "./components/paymentCallback"; 
+import Terms from './pages/Terms';
+import Privacy from './pages/Privecy'; // Fixed typo from Privecy to Privacy
+import Refund from './pages/Refund';
+import About from './pages/About';
+import Contact from './pages/Contact';
+import OrdersPage from "./pages/ODP"; // Renamed for clarity
+import OrderDetailsPage from "./pages/ODPdashboard"; // Renamed for clarity
 
 // ✅ Enhanced ProtectedRoute Component
 function ProtectedRoute({ isAuthenticated, role, allowedRoles, children, redirectTo = "/login" }) {
@@ -116,6 +123,23 @@ function App() {
         <Route path="/" element={<Homes />} />
         <Route path="/product/:id" element={<ProductPage />} />
         <Route path="/category/:categoryName" element={<CategoriesPage />} />
+        
+        {/* ✅ ADDED: Policy and Information Pages */}
+        <Route path="/terms" element={<Terms />} />
+        <Route path="/privacy" element={<Privacy />} />
+        <Route path="/refund" element={<Refund />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
+
+        {/* ✅ PAYMENT CALLBACK ROUTE - Added Here */}
+        <Route 
+          path="/payment-callback" 
+          element={
+            // <ProtectedRoute isAuthenticated={isAuthenticated} role={role}>
+              <PaymentCallback />
+            // </ProtectedRoute>
+          } 
+        />
 
         {/* ✅ Auth Routes - Fixed to prevent multiple redirects */}
         <Route
@@ -153,6 +177,34 @@ function App() {
           element={
             <ProtectedRoute isAuthenticated={isAuthenticated} role={role}>
               <Profile />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* ✅ CHECKOUT ROUTE - Add this if you need a dedicated checkout page */}
+        <Route
+          path="/checkout"
+          element={
+            <ProtectedRoute isAuthenticated={isAuthenticated} role={role}>
+              <CartPage /> {/* or create a separate Checkout page */}
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Order Management Routes */}
+        <Route 
+          path="/orders" 
+          element={
+            <ProtectedRoute isAuthenticated={isAuthenticated} role={role}>
+              <OrdersPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route 
+          path="/orders/:orderId"  
+          element={
+            <ProtectedRoute isAuthenticated={isAuthenticated} role={role}>
+              <OrderDetailsPage />
             </ProtectedRoute>
           }
         />

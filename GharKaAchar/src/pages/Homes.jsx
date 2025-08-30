@@ -778,125 +778,132 @@ export default function Homes() {
       </motion.div>
 
       {/* Footer */}
-      <motion.footer 
-        className="bg-gradient-to-r from-amber-900 via-orange-900 to-red-900 text-white pt-16 pb-8"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 1 }}
-      >
-        <div className="container mx-auto px-4">
-          <motion.div 
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12"
-            variants={staggerContainer}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-          >
-            {/* Logo + Instagram Icon */}
-            <motion.div className="lg:col-span-1" variants={fadeInUp}>
-              <motion.h2 
-                className="text-4xl font-bold font-serif mb-6 bg-gradient-to-r from-yellow-300 to-orange-300 bg-clip-text text-transparent"
-                whileHover={{ scale: 1.05 }}
+     <motion.footer 
+  className="bg-gradient-to-r from-amber-900 via-orange-900 to-red-900 text-white pt-16 pb-8"
+  initial={{ opacity: 0 }}
+  whileInView={{ opacity: 1 }}
+  viewport={{ once: true }}
+  transition={{ duration: 1 }}
+>
+  <div className="container mx-auto px-4">
+    <motion.div 
+      className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12"
+      variants={staggerContainer}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true }}
+    >
+      {/* Logo + Instagram Icon */}
+      <motion.div className="lg:col-span-1" variants={fadeInUp}>
+        <motion.h2 
+          className="text-4xl font-bold font-serif mb-6 bg-gradient-to-r from-yellow-300 to-orange-300 bg-clip-text text-transparent"
+          whileHover={{ scale: 1.05 }}
+        >
+          GharKaAchar
+        </motion.h2>
+        <p className="text-amber-100 mb-6 text-lg leading-relaxed">
+          Authentic Indian pickles and traditional foods crafted with love and generations-old recipes.
+        </p>
+        
+        {/* Only Instagram Icon */}
+        <motion.a
+          href="https://instagram.com/gharkachar"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center p-3 rounded-full bg-white/10 backdrop-blur-sm text-white hover:bg-pink-600 transition-all duration-300 hover:scale-110"
+          whileHover={{ scale: 1.2, rotate: 10 }}
+          whileTap={{ scale: 0.9 }}
+        >
+          <InstagramIcon />
+          <span className="ml-3 font-medium">Follow Us</span>
+        </motion.a>
+      </motion.div>
+
+      {/* Backend Categories */}
+      <motion.div variants={fadeInUp}>
+        <h3 className="text-xl font-bold mb-6 text-yellow-300">Our Categories</h3>
+        <ul className="space-y-4">
+          {(categories?.data?.length > 0 ? categories.data : data.data.slice(0, 8).map((item, index) => ({
+            _id: item._id || index,
+            category_name: item.product_category || item.category || `Category ${index + 1}`
+          }))).map((category) => (
+            <motion.li key={category._id}>
+              <Link
+                to={`/category/${category.category_name || category.product_category || category.category}`}
+                className="text-amber-100 hover:text-white transition-colors flex items-center group"
               >
-                GharKaAchar
-              </motion.h2>
-              <p className="text-amber-100 mb-6 text-lg leading-relaxed">
-                Authentic Indian pickles and traditional foods crafted with love and generations-old recipes.
-              </p>
-              
-              {/* Only Instagram Icon */}
-              <motion.a
-                href="https://instagram.com/gharkachar"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center p-3 rounded-full bg-white/10 backdrop-blur-sm text-white hover:bg-pink-600 transition-all duration-300 hover:scale-110"
-                whileHover={{ scale: 1.2, rotate: 10 }}
-                whileTap={{ scale: 0.9 }}
+                <motion.div
+                  initial={{ x: 0 }}
+                  whileHover={{ x: 8 }}
+                  className="flex items-center"
+                >
+                  <svg className="w-4 h-4 mr-2 opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                  {category.category_name || category.product_category || category.category}
+                </motion.div>
+              </Link>
+            </motion.li>
+          ))}
+        </ul>
+      </motion.div>
+
+      {/* Quick Links - UPDATED */}
+      <motion.div variants={fadeInUp}>
+        <h3 className="text-xl font-bold mb-6 text-yellow-300">Quick Links</h3>
+        <ul className="space-y-4">
+          {[
+            { name: 'Home', path: '/' },
+            { name: 'About Us', path: '/about' },
+            { name: 'Contact', path: '/contact' },
+            { name: 'Privacy Policy', path: '/privacy' },
+            { name: 'Terms & Conditions', path: '/terms' },
+            { name: 'Refund Policy', path: '/refund' }
+          ].map((link) => (
+            <motion.li key={link.name}>
+              <Link
+                to={link.path}
+                className="text-amber-100 hover:text-white transition-colors flex items-center group"
               >
-                <InstagramIcon />
-                <span className="ml-3 font-medium">Follow Us</span>
-              </motion.a>
-            </motion.div>
+                <motion.div
+                  initial={{ x: 0 }}
+                  whileHover={{ x: 8 }}
+                  className="flex items-center"
+                >
+                  <svg className="w-4 h-4 mr-2 opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                  {link.name}
+                </motion.div>
+              </Link>
+            </motion.li>
+          ))}
+        </ul>
+      </motion.div>
+    </motion.div>
 
-            {/* Backend Categories */}
-            <motion.div variants={fadeInUp}>
-              <h3 className="text-xl font-bold mb-6 text-yellow-300">Our Categories</h3>
-              <ul className="space-y-4">
-                {(categories?.data?.length > 0 ? categories.data : data.data.slice(0, 8).map((item, index) => ({
-                  _id: item._id || index,
-                  category_name: item.product_category || item.category || `Category ${index + 1}`
-                }))).map((category) => (
-                  <motion.li key={category._id}>
-                    <Link
-                      to={`/category/${category.category_name || category.product_category || category.category}`}
-                      className="text-amber-100 hover:text-white transition-colors flex items-center group"
-                    >
-                      <motion.div
-                        initial={{ x: 0 }}
-                        whileHover={{ x: 8 }}
-                        className="flex items-center"
-                      >
-                        <svg className="w-4 h-4 mr-2 opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                        </svg>
-                        {category.category_name || category.product_category || category.category}
-                      </motion.div>
-                    </Link>
-                  </motion.li>
-                ))}
-              </ul>
-            </motion.div>
+    {/* Copyright Section */}
+    <motion.div 
+      className="border-t border-white/20 my-12"
+      initial={{ scaleX: 0 }}
+      whileInView={{ scaleX: 1 }}
+      viewport={{ once: true }}
+      transition={{ duration: 1.5 }}
+    />
 
-            {/* Quick Links */}
-            <motion.div variants={fadeInUp}>
-              <h3 className="text-xl font-bold mb-6 text-yellow-300">Quick Links</h3>
-              <ul className="space-y-4">
-                {['Home', 'About Us', 'Contact', 'Privacy Policy'].map((link) => (
-                  <motion.li key={link}>
-                    <motion.a
-                      href="#"
-                      className="text-amber-100 hover:text-white transition-colors flex items-center group"
-                    >
-                      <motion.div
-                        initial={{ x: 0 }}
-                        whileHover={{ x: 8 }}
-                        className="flex items-center"
-                      >
-                        <svg className="w-4 h-4 mr-2 opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                        </svg>
-                        {link}
-                      </motion.div>
-                    </motion.a>
-                  </motion.li>
-                ))}
-              </ul>
-            </motion.div>
-          </motion.div>
-
-          {/* Copyright Section */}
-          <motion.div 
-            className="border-t border-white/20 my-12"
-            initial={{ scaleX: 0 }}
-            whileInView={{ scaleX: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1.5 }}
-          />
-
-          <motion.div 
-            className="text-center"
-            variants={fadeInUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-          >
-            <p className="text-amber-200 text-lg">
-              &copy; {new Date().getFullYear()} GharKaAchar. All rights reserved. Made with ❤️ in India
-            </p>
-          </motion.div>
-        </div>
-      </motion.footer>
+    <motion.div 
+      className="text-center"
+      variants={fadeInUp}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true }}
+    >
+      <p className="text-amber-200 text-lg">
+        &copy; {new Date().getFullYear()} GharKaAchar. All rights reserved. Made with ❤️ in India
+      </p>
+    </motion.div>
+  </div>
+</motion.footer>
 
       <style>{`
         .hide-scrollbar {

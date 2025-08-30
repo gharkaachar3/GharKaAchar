@@ -175,7 +175,7 @@ const Checkout = ({ cartItems, onOrderSuccess }) => {
     }
   };
 
-  // ✅ FIXED: Create order with proper item transformation
+  // ✅ MAIN FIX: Create order with proper endpoint and data
   const onSubmit = async (data) => {
     if (!phoneVerification.isVerified) {
       toast.error('Phone verification is required');
@@ -185,34 +185,41 @@ const Checkout = ({ cartItems, onOrderSuccess }) => {
     setLoading(prev => ({ ...prev, creatingOrder: true }));
 
     try {
-      // Transform cart items before sending to backend
       const transformedItems = transformCartItems(cartItems);
       
       const orderData = {
         userName: data.userName,
         phone: data.phone,
         address: data.address,
-        items: transformedItems, // ✅ Use transformed items
+        items: transformedItems,
         paymentMethod: data.paymentMethod,
         orderNotes: data.orderNotes,
         specialInstructions: data.specialInstructions,
-        deliveryPreferences: data.deliveryPreferences
+        deliveryPreferences: data.deliveryPreferences,
+        // ✅ Add totals
+        subtotal: subtotal,
+        deliveryCharges: deliveryCharges,
+        totalAmount: totalAmount
       };
 
       console.log('Order data being sent:', orderData);
 
+      // ✅ MAIN FIX: Correct API endpoint
       const response = await axiosClient.post('/cashfree/create', orderData);
 
       if (response.data.success) {
         const { order } = response.data;
 
         if (data.paymentMethod === 'cod') {
-          toast.success('COD Order placed successfully!');
+          toast.success('🎉 COD Order placed successfully!');
           onOrderSuccess && onOrderSuccess(order);
         } else {
           // Cashfree payment
           if (order.paymentSessionId) {
+            toast.success('Payment session created. Redirecting to payment...');
             initializeCashfreePayment(order);
+          } else {
+            throw new Error('Payment session not created');
           }
         }
       }
@@ -224,30 +231,52 @@ const Checkout = ({ cartItems, onOrderSuccess }) => {
     }
   };
 
-  // Initialize Cashfree Payment
+  // ✅ FIXED: Initialize Cashfree Payment with return URL
   const initializeCashfreePayment = (order) => {
     const script = document.createElement('script');
     script.src = 'https://sdk.cashfree.com/js/v3/cashfree.js';
+    
     script.onload = () => {
-      const cashfree = window.Cashfree({
-        mode: 'sandbox'
-      });
+      try {
+        const cashfree = window.Cashfree({
+          mode: process.env.NODE_ENV === 'production' ? 'production' : 'sandbox'
+        });
 
-      const checkoutOptions = {
-        paymentSessionId: order.paymentSessionId,
-        redirectTarget: '_self'
-      };
+        const checkoutOptions = {
+          paymentSessionId: order.paymentSessionId,
+          redirectTarget: '_self',
+          // ✅ FIXED: Add return URL for payment callback
+          returnUrl: `${window.location.origin}/payment-callback?order_id=${order.orderId || order.cashfreeOrderId}&payment=success`
+        };
 
-      cashfree.checkout(checkoutOptions).then((result) => {
-        if (result.error) {
-          console.error('Payment error:', result.error);
-          toast.error('Payment failed: ' + result.error.message);
-        }
-        if (result.redirect) {
-          console.log('Redirecting to payment page');
-        }
-      });
+        console.log('Initializing Cashfree with options:', checkoutOptions);
+
+        cashfree.checkout(checkoutOptions).then((result) => {
+          console.log('Cashfree checkout result:', result);
+          
+          if (result.error) {
+            console.error('Cashfree checkout error:', result.error);
+            toast.error('Payment initialization failed: ' + result.error.message);
+          }
+          
+          if (result.redirect) {
+            console.log('Redirecting to payment page...');
+          }
+        }).catch((error) => {
+          console.error('Cashfree SDK error:', error);
+          toast.error('Payment failed to initialize');
+        });
+      } catch (error) {
+        console.error('Cashfree initialization error:', error);
+        toast.error('Payment system error');
+      }
     };
+
+    script.onerror = (error) => {
+      console.error('Failed to load Cashfree SDK:', error);
+      toast.error('Payment system unavailable. Please try again.');
+    };
+
     document.head.appendChild(script);
   };
 

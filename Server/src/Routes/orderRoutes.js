@@ -14,11 +14,13 @@ const order = require("../Model/order")
 Orderrouter.post('/create', protect, createOrder);
 Orderrouter.get('/user-orders', protect, getUserOrders);
 Orderrouter.get('/:orderId', protect, getOrder);
-Orderrouter.get('/verify/:orderId', protect, verifyPayment);
+
+// Remove protect from verify route for payment callback
+Orderrouter.get('/verify/:orderId', verifyPayment);
 
 // Webhook route (no auth required)
 Orderrouter.post('/cashfree/webhook', handleCashfreeWebhook);
-Orderrouter.get('/all',protect,async(req,res)=>{
+Orderrouter.get('/all', protect, async(req, res)=>{
   try{
     const data = await order.find({});
     res.status(200).send(data);

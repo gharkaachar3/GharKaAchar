@@ -7,7 +7,7 @@ const crypto = require('crypto');
 const CASHFREE_CONFIG = {
   appId: process.env.CASHFREE_APP_ID,
   secretKey: process.env.CASHFREE_SECRET_KEY,
-  baseUrl: process.env.CASHFREE_BASE_URL,
+  baseUrl: process.env.CASHFREE_BASE_URL || 'https://sandbox.cashfree.com/pg',
   apiVersion: process.env.CASHFREE_API_VERSION || '2023-08-01'
 };
 
@@ -107,9 +107,12 @@ async function createOrder(req, res) {
     // Handle Cashfree orders
     if (paymentMethod === 'cashfree') {
       try {
+        // Generate a unique order ID
+        const cashfreeOrderId = 'ORD' + Date.now() + Math.floor(Math.random() * 1000);
+        
         // Create Cashfree order
         const cashfreeOrderData = {
-          order_id: 'ORD' + Date.now() + Math.floor(Math.random() * 1000),
+          order_id: cashfreeOrderId,
           order_amount: totalAmount,
           order_currency: 'INR',
           customer_details: {
@@ -119,10 +122,12 @@ async function createOrder(req, res) {
             customer_phone: phone
           },
           order_meta: {
-            return_url: `${process.env.FRONTEND_URL}/payment-callback`,
-            notify_url: `${process.env.BACKEND_URL}/api/orders/cashfree/webhook`
+            return_url: `${process.env.FRONTEND_URL}/payment-callback?order_id=${cashfreeOrderId}`,
+            notify_url: `${process.env.BACKEND_URL}/cashfree/webhook`
           }
         };
+
+        console.log('Creating Cashfree order:', cashfreeOrderData);
 
         const cashfreeResponse = await axios.post(
           `${CASHFREE_CONFIG.baseUrl}/orders`,
@@ -154,10 +159,11 @@ async function createOrder(req, res) {
         }
 
       } catch (cashfreeError) {
-        console.error('Cashfree order creation failed:', cashfreeError);
+        console.error('Cashfree order creation failed:', cashfreeError.response?.data || cashfreeError.message);
         return res.status(500).json({
           success: false,
-          message: "Payment gateway error. Please try again."
+          message: "Payment gateway error. Please try again.",
+          error: cashfreeError.response?.data || cashfreeError.message
         });
       }
     }
@@ -166,21 +172,23 @@ async function createOrder(req, res) {
     console.error('Create order error:', error);
     res.status(500).json({
       success: false,
-      message: "Failed to create order"
+      message: "Failed to create order",
+      error: error.message
     });
   }
 }
 
-// Cashfree Webhook Handler
+// Cashfree Webhook Handler - UPDATED TO NOT SAVE FAILED PAYMENTS
 async function handleCashfreeWebhook(req, res) {
   try {
     const { order_id, payment_status, cf_payment_id, order_amount } = req.body;
 
-    console.log('Cashfree webhook:', req.body);
+    console.log('Cashfree webhook received:', req.body);
 
     // Find order by Cashfree order ID
     const order = await Order.findOne({ cashfreeOrderId: order_id });
     if (!order) {
+      console.log('Order not found for Cashfree ID:', order_id);
       return res.status(404).json({
         success: false,
         message: "Order not found"
@@ -193,7 +201,7 @@ async function handleCashfreeWebhook(req, res) {
       order.paymentId = cf_payment_id;
       order.orderStatus = 'confirmed';
       
-      await order.updateStatus('confirmed', 'Payment successful via Cashfree');
+      await order.save();
       
       console.log(`✅ Payment successful for order: ${order.orderId}`);
       
@@ -203,22 +211,21 @@ async function handleCashfreeWebhook(req, res) {
       });
     }
 
-    // Handle payment failure
+    // Handle payment failure - DO NOT save to database
     if (payment_status === 'FAILED') {
-      order.paymentStatus = 'failed';
-      order.orderStatus = 'cancelled';
+      console.log(`❌ Payment failed for order: ${order.orderId}, NOT updating database`);
       
-      await order.updateStatus('cancelled', 'Payment failed');
-      
-      console.log(`❌ Payment failed for order: ${order.orderId}`);
+      // Delete the order from database since payment failed
+      await Order.deleteOne({ cashfreeOrderId: order_id });
       
       return res.status(200).json({
         success: true,
-        message: "Payment failed, order cancelled"
+        message: "Payment failed, order deleted from database"
       });
     }
 
     // Handle other statuses
+    console.log(`ℹ️ Payment status: ${payment_status} for order: ${order.orderId}`);
     res.status(200).json({
       success: true,
       message: "Webhook received"
@@ -228,21 +235,42 @@ async function handleCashfreeWebhook(req, res) {
     console.error('Webhook error:', error);
     res.status(500).json({
       success: false,
-      message: "Webhook processing failed"
+      message: "Webhook processing failed",
+      error: error.message
     });
   }
 }
 
-// Verify Payment Status (Manual check)
+// Verify Payment Status (Manual check) - UPDATED TO NOT SAVE FAILED PAYMENTS
 async function verifyPayment(req, res) {
   try {
     const { orderId } = req.params;
     
+    console.log('Verifying payment for order:', orderId);
+    
+    // Find order by your internal orderId
     const order = await Order.findOne({ orderId });
-    if (!order || !order.cashfreeOrderId) {
+    if (!order) {
       return res.status(404).json({
         success: false,
         message: "Order not found"
+      });
+    }
+
+    // If it's COD, no need to verify with Cashfree
+    if (order.paymentMethod === 'cod') {
+      return res.status(200).json({
+        success: true,
+        paymentStatus: 'SUCCESS',
+        order: order
+      });
+    }
+
+    // Check if we have a cashfreeOrderId
+    if (!order.cashfreeOrderId) {
+      return res.status(400).json({
+        success: false,
+        message: "No Cashfree order ID found"
       });
     }
 
@@ -252,36 +280,44 @@ async function verifyPayment(req, res) {
       { headers: getCashfreeHeaders() }
     );
 
+    console.log('Cashfree verification response:', response.data);
+
     const payments = response.data;
+    let paymentStatus = 'PENDING';
+    
     if (payments && payments.length > 0) {
       const latestPayment = payments[0];
+      paymentStatus = latestPayment.payment_status;
       
       if (latestPayment.payment_status === 'SUCCESS') {
+        // Only update database for successful payments
         order.paymentStatus = 'paid';
         order.paymentId = latestPayment.cf_payment_id;
         order.orderStatus = 'confirmed';
         await order.save();
+        
+        console.log(`✅ Payment successful for order: ${order.orderId}, saved to database`);
       } else if (latestPayment.payment_status === 'FAILED') {
-        order.paymentStatus = 'failed';
-        order.orderStatus = 'cancelled';
-        await order.save();
+        // DO NOT save failed payments to database
+        // Delete the order from database since payment failed
+        await Order.deleteOne({ orderId: order.orderId });
+        console.log(`❌ Payment failed for order: ${order.orderId}, order deleted from database`);
       }
     }
 
     res.status(200).json({
       success: true,
-      order: {
-        orderId: order.orderId,
-        paymentStatus: order.paymentStatus,
-        orderStatus: order.orderStatus
-      }
+      paymentStatus: paymentStatus,
+      order: paymentStatus === 'SUCCESS' ? order : null
     });
 
   } catch (error) {
-    console.error('Payment verification error:', error);
+    console.error('Payment verification error:', error.response?.data || error.message);
+    
     res.status(500).json({
       success: false,
-      message: "Payment verification failed"
+      message: "Payment verification failed",
+      error: error.response?.data || error.message
     });
   }
 }
@@ -290,7 +326,7 @@ async function verifyPayment(req, res) {
 async function getUserOrders(req, res) {
   try {
     const userId = req.user.id;
-    const orders = await Order.findByUserId(userId);
+    const orders = await Order.find({ userId }).sort({ createdAt: -1 });
     
     res.status(200).json({
       success: true,
@@ -332,10 +368,31 @@ async function getOrder(req, res) {
   }
 }
 
+// Cleanup failed orders (optional - can be run as a cron job)
+async function cleanupFailedOrders() {
+  try {
+    // Delete orders that have been in pending state for more than 24 hours
+    const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
+    
+    const result = await Order.deleteMany({
+      paymentStatus: 'pending',
+      createdAt: { $lt: twentyFourHoursAgo }
+    });
+    
+    console.log(`Cleaned up ${result.deletedCount} failed orders`);
+  } catch (error) {
+    console.error('Error cleaning up failed orders:', error);
+  }
+}
+
+// Run cleanup daily (you can set this up with a cron job)
+setInterval(cleanupFailedOrders, 24 * 60 * 60 * 1000);
+
 module.exports = {
   createOrder,
   handleCashfreeWebhook,
   verifyPayment,
   getUserOrders,
-  getOrder
+  getOrder,
+  cleanupFailedOrders
 };

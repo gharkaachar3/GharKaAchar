@@ -89,7 +89,6 @@ export default function Profile() {
   const [toast, setToast] = useState(null);
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
 
-  // ✅ Debug logs (remove in production)
   console.log('Auth State:', { user, isAuthenticated });
   console.log('User Details:', user);
 
@@ -240,9 +239,9 @@ export default function Profile() {
                 </p>
                 
                 {/* Phone number if available */}
-                {(user?.phone || user?.user?.phone || user?.number) && (
+                {(user?.phone || user?.user?.phone || user?.user?.number) && (
                   <p className="text-amber-100 text-xs mt-1">
-                    📱 {user?.phone || user?.user?.phone || user?.number}
+                    📱 {user?.phone || user?.user?.phone || user?.user?.number}
                   </p>
                 )}
               </div>
@@ -264,7 +263,7 @@ export default function Profile() {
                         ? 'bg-green-100 text-green-700' 
                         : 'bg-yellow-100 text-yellow-700'
                     }`}>
-                      {user?.isPhoneVerified || user?.user?.isPhoneVerified ? '✓ Verified' : '⚠ Not Verified'}
+                      {user?.user.number ? '✓ Verified' : '⚠ Not Verified'}
                     </span>
                   </div>
                   
